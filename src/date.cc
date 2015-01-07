@@ -4,71 +4,69 @@
 #include "date.h"
 
 /** no arguments constructor */
-Date::Date(): day_(1), month_(1), year_(1970){ }
+Date::Date(){
+	date_[0] = 1;
+	date_[1] = 1;
+	date_[2] = 1970;
+}
 
 /** arguments constructor */
-Date::Date(int r, int m, int d): day_(d), month_(m), year_(r){ }
+Date::Date(int r, int m, int d){
+	date_[0] = d;
+	date_[1] = m;
+	date_[2] = r;
+}
 
 /** copy constructor */
 Date::Date(const Date & date){
-
-	day_ = date.day_;
-	month_ = date.month_;
-	year_ = date.year_;
+	date_[0] = date.date_[0];
+	date_[1] = date.date_[1];
+	date_[2] = date.date_[2];
 }
 
 /** operator "=" */
 Date & Date:: operator=( const Date &date){
 
 	if( this != &date ){
-		day_ = date.day_;
-		month_ = date.month_;
-		year_ = date.year_;
+		date_[0] = date.date_[0];
+		date_[1] = date.date_[1];
+		date_[2] = date.date_[2];
 	}
 	return *this;
 }
 
 /** operator "<" */
-bool Date::operator<(const Date &date)const{
+bool Date::operator<(Date &date){
 
-	if (year_ < date.year_)
+	pair<array<int, array_size>::iterator,array<int, array_size>::iterator> pair_not_equal;
+	pair_not_equal = mismatch(date_.begin(), date_.end(), date.date_.begin());
+	if(*pair_not_equal.first < *pair_not_equal.second)
 		return true;
-	else if (year_ > date.year_)
+	else
 		return false;
-	else if (year_ == date.year_){
-		if (month_ < date.month_)
-			return true;
-		else if (month_ > date.month_)
-			return false;
-		else if (month_ == date.month_){
-			if (day_ < date.day_)
-				return true;
-			else if (day_ > date.day_)
-				return false;
-			else if (day_ == date.day_)
-				return false;
-		}
-	}
 }
 
 /** friend method for operator "<<" */
 ostream & operator<<(std::ostream & os, const Date & date){
 
-	os << date.day_<<"."<<date.month_<<"."<<date.year_<<endl;
+	os << date.date_[0]<<"."<<date.date_[1]<<"."<<date.date_[2]<<endl;
 	return os;
 }
 
 /** virtual method for write date to file */
-void Date::write_date(ofstream file) {
-	file<<day_<<","<<month_<<","<<year_<<endl;
+void Date::write_date(ofstream& file) {
+	file<<date_[0]<<","<<date_[1]<<","<<date_[2]<<endl;
 	if(!file)
 		throw WriteFileError ("WRITE ERROR");
 
 }
 
 /** virtual method for read date from file */
-void Date::read_date(ifstream file) {
-	file>>day_>>month_>>year_;
-	if(!file) { }
+void Date::read_date(ifstream& file) {
+	string read_temp;
+	getline(file, read_temp);
+	if(!file)
 		throw ReadFileError ("READ ERROR");
+	for(size_t i =0; i < array_size; ++i)
+		date_[i] = atoi(find_word(read_temp, i+1).c_str());
 }

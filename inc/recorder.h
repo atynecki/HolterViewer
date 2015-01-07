@@ -6,7 +6,9 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstdlib>
 #include "error.h"
+#include "app_service.h"
 
 using namespace std;
 
@@ -22,8 +24,8 @@ public:
 
 	virtual ~Recorder() { }
 
-	virtual void write_date(ofstream file) = 0;
-	virtual void read_date(ifstream file) = 0;
+	virtual void write_date(ofstream& file) = 0;
+	virtual void read_date(ifstream& file) = 0;
 
 };
 
@@ -38,8 +40,8 @@ public:
 
 	friend ostream & operator<<(std::ostream & os, const RecorderEKG & recorder);
 
-	virtual void write_date(ofstream file);
-	virtual void read_date(ifstream file);
+	virtual void write_date(ofstream& file);
+	virtual void read_date(ifstream& file);
 };
 
 class RecorderABPM: public Recorder {
@@ -52,9 +54,8 @@ public:
 	RecorderABPM & operator=(const RecorderABPM &recorder);
 
 	friend ostream & operator<<(std::ostream & os, const RecorderABPM & recorder);
-	friend istream & operator>>(std::istream & is, const RecorderABPM & recorder);
 
-	virtual void write_date(ofstream file);
-	virtual void read_date(ifstream file);
+	virtual void write_date(ofstream& file);
+	virtual void read_date(ifstream& file);
 };
 #endif /* RECORDER_H_ */

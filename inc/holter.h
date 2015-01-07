@@ -28,8 +28,8 @@ public:
 	virtual ~Holter();
 
 	virtual void show_date () = 0;
-	virtual int save_date () = 0;
-	virtual int read_date () = 0;
+	virtual void write_date (ofstream& file) = 0;
+	virtual void read_date (ifstream& file) = 0;
 
 };
 
@@ -45,8 +45,8 @@ public:
 	virtual ~HolterEKG();
 
 	virtual void show_date ();
-	virtual void write_date ();
-	virtual void read_date ();
+	virtual void write_date (ofstream& file);
+	virtual void read_date (ifstream& file);
 };
 
 class HolterABPM: public Holter {
@@ -61,8 +61,8 @@ public:
 	virtual ~HolterABPM();
 
 	virtual void show_date ();
-	virtual void write_date ();
-	virtual void read_date ();
+	virtual void write_date (ofstream& file);
+	virtual void read_date (ifstream& file);
 };
 
 #endif /* HOLTER_H_ */

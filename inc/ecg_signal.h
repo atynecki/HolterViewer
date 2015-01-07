@@ -6,32 +6,35 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <utility>
+#include <vector>
+#include "error.h"
+#include "app_service.h"
 
 using namespace std;
 
-template < class Elt1, class Elt2 >
+template <typename Elt1, typename Elt2>
 class Signal {
-	//dane przechowywać w kontenerze?? (para albo vector)
-	Elt1 *sample_;
-	Elt2 *time_;
-	int sample_num_;
+	vector<pair<Elt1, Elt2>> signal_;
 public:
-	Signal();
-	Signal(int sample_number);
-	Signal(int sample_number, Elt1 *sample, Elt2 *time);
-	Signal(const Signal &signal);
+	Signal(){};
+	Signal(vector<Elt1> sample, vector<Elt2> time);
+	Signal(const Signal &sig);
 
-	~Signal();
-
-	Signal & operator=(const Signal &signal);
+	Signal & operator=(const Signal &sig);
 	Signal operator+(const Signal& sig) const;
 	Signal operator()(Elt1 sample, Elt2 time) const;
 
-	friend ostream & operator<<(std::ostream & os, const Signal<Elt1, Elt2> & signal);
+	void fun_1(pair<Elt1, Elt2> el);
 
-	void write_date(ofstream file);
-	void read_date(ifstream file);
+	void show_date();
+	void write_date(ofstream& file);
+	void read_date(ifstream& file);
 
 };
+template <typename Elt1, typename Elt2>
+void fun_2(pair<Elt1, Elt2> el);
+
+#include "ecg_signal_impl.h"
 
 #endif /* SIGNAL_H_ */

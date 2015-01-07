@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "error.h"
+#include "app_service.h"
 
 using namespace std;
 
@@ -20,14 +22,15 @@ public:
 
 	virtual int set_id_number () = 0;
 
-	virtual void write_date(ofstream file) = 0;
-	virtual void read_date(ifstream file) = 0;
+	virtual void write_date(ofstream& file) = 0;
+	virtual void read_date(ifstream& file) = 0;
 };
 
 class Patient: public Person {
 	int age_;
 	int growth_;
 	int weight_;
+	int id_number_;
 public:
 	Patient();
 	Patient(int age, int growth, int weight, string name, string last_name, string pesel);
@@ -39,8 +42,8 @@ public:
 
 	virtual int set_id_number ();
 
-	virtual void write_date(ofstream file);
-	virtual void read_date(ifstream file);
+	virtual void write_date(ofstream& file);
+	virtual void read_date(ifstream& file);
 };
 
 #endif /* PATIENT_H_ */

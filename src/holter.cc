@@ -31,8 +31,8 @@ Holter::Holter(const Date &date, const Patient &patient,const Signal<int, int> &
 	patients_ = unique_ptr<Patient> (new Patient);
 	*patients_= patient;
 
-	signal_ = new Signal<int, int>;
-	*signal_ = signal;
+	//signal_ = new Signal<int, int>;
+	//*signal_ = signal;
 
 }
 
@@ -41,7 +41,7 @@ Holter::~Holter(){
 
 	patients_.reset();
 	delete test_date_;
-	delete signal_;
+	//delete signal_;
 
 }
 
@@ -61,9 +61,9 @@ HolterEKG::HolterEKG(const Date &date, const Patient &patient,const Signal<int, 
 	patients_ = unique_ptr<Patient> (new Patient);
 	*patients_= patient;
 
-	signal_ = new Signal<int, int> [signal_num];
+	//signal_ = new Signal<int, int> [signal_num];
 	for (int i=0; i<signal_num;++i){
-		signal_[i] = signal[i];
+		//signal_[i] = signal[i];
 	}
 
 }
@@ -79,9 +79,9 @@ HolterEKG::HolterEKG (HolterEKG &holter){
 	test_date_ = new Date;
 	test_date_ = holter.test_date_;
 
-	signal_ = new Signal<int, int>[holter.signal_number_];
+	//signal_ = new Signal<int, int>[holter.signal_number_];
 	for (int i=0; i<holter.signal_number_;++i){
-		signal_[i] = holter.signal_[i];
+		//signal_[i] = holter.signal_[i];
 	}
 
 }
@@ -91,7 +91,7 @@ HolterEKG::~HolterEKG(){
 
 	patients_.reset();
 	delete test_date_;
-	delete [] signal_;
+	//delete [] signal_;
 
 }
 
@@ -108,10 +108,10 @@ HolterEKG & HolterEKG::operator=(HolterEKG &holter){
 		test_date_ = new Date;
 		test_date_ = holter.test_date_;
 
-		delete [] signal_;
-		signal_ = new Signal<int, int> [holter.signal_number_];
+		//delete [] signal_;
+		//signal_ = new Signal<int, int> [holter.signal_number_];
 		for (int i=0; i<holter.signal_number_;++i){
-			signal_[i] = holter.signal_[i];
+			//signal_[i] = holter.signal_[i];
 		}
 	}
 	return *this;
@@ -134,44 +134,50 @@ void HolterEKG::show_date() {
 
 	for (int i=0; i<signal_number_; i++){
 		cout<<"Signal "<< i+1<<endl;
-		cout<<signal_ [i];
 	}
 }
 
 /** virtual method for write date to file */
-void HolterEKG::write_date() {
+void HolterEKG::write_date(ofstream& file) {
 	ofstream plikWyj ( "Holter_EKG_result.txt" ) ;
 	if(!plikWyj)
 		throw OpenFileError ("FILE NOT OPEN");
 
-	plikWyj<< "Signal number: " <<signal_number_<<endl;
+	plikWyj<< "HOLTER_EKG_DATE"<<endl;
+	if(!plikWyj)
+			throw WriteFileError ("WRITE ERROR");
+
+	plikWyj<< "Signal_number: " <<signal_number_<<endl;
 	if(!plikWyj)
 		throw WriteFileError ("WRITE ERROR");
 
 	new_recorder_.write_date(plikWyj);
 	patients_->write_date(plikWyj);
 	test_date_->write_date(plikWyj);
-	signal_->write_date(plikWyj);
+	//signal_->write_date(plikWyj);
 
 	plikWyj.close();
 }
 
 /** virtual method for read date from file */
-void HolterEKG::read_date() {
-	ifstream plikWej ( "Holter_EKG_result.txt" ) ;
+void HolterEKG::read_date(ifstream& file) {
 	string tmp;
+	ifstream plikWej ( "Holter_EKG_result.txt" ) ;
 	if(!plikWej)
 		throw OpenFileError ("FILE NOT OPEN");
 
+	getline(file, tmp);
+
 	plikWej>>tmp;
 	plikWej>>signal_number_;
+
 	if(!plikWej)
 		throw ReadFileError ("READ ERROR");
 
 	new_recorder_.read_date(plikWej);
 	patients_->read_date(plikWej);
 	test_date_->read_date(plikWej);
-	signal_->read_date(plikWej);
+	//signal_->read_date(plikWej);
 
 	plikWej.close();
 }
@@ -192,8 +198,8 @@ HolterABPM::HolterABPM(const Date &date, const Patient &patient, const Signal<in
 	patients_ = unique_ptr<Patient> (new Patient);
 	*patients_= patient;
 
-	signal_ = new Signal<int, int>;
-	*signal_ = signal;
+	//signal_ = new Signal<int, int>;
+	//*signal_ = signal;
 }
 
 /** copy constructor */
@@ -207,7 +213,7 @@ HolterABPM::HolterABPM (HolterABPM &holter){
 	test_date_ = new Date;
 	test_date_ = holter.test_date_;
 
-	signal_ = new Signal<int, int>;
+	//signal_ = new Signal<int, int>;
 	signal_ = holter.signal_;
 
 }
@@ -217,7 +223,7 @@ HolterABPM::~HolterABPM(){
 
 	patients_.reset();
 	delete test_date_;
-	delete signal_;
+	//delete signal_;
 
 }
 
@@ -234,8 +240,8 @@ HolterABPM & HolterABPM::operator=(HolterABPM &holter){
 		test_date_ = new Date;
 		test_date_ = holter.test_date_;
 
-		delete signal_;
-		signal_ = new Signal<int, int>;
+		//delete signal_;
+		//signal_ = new Signal<int, int>;
 		signal_ = holter.signal_;
 	}
 	return *this;
@@ -257,15 +263,17 @@ void HolterABPM::show_date() {
 	cout<<"Test date:"<<endl;
 	cout<<test_date_;
 
-	cout<<"Signal:"<<endl;
-	cout<<signal_;
 }
 
 /** virtual method for write date to file */
-void HolterABPM::write_date() {
+void HolterABPM::write_date(ofstream& file) {
 	ofstream plikWyj ( "Holter_ABPM_result.txt" ) ;
 	if(!plikWyj)
 		throw OpenFileError ("FILE NOT OPEN");
+
+	plikWyj<< "HOLTER_ABPM_DATE"<<endl;
+	if(!plikWyj)
+		throw WriteFileError ("WRITE ERROR");
 
 	plikWyj<< "Mode: " <<mode_<<endl;
 	if(!plikWyj)
@@ -274,17 +282,19 @@ void HolterABPM::write_date() {
 	new_recorder_.write_date(plikWyj);
 	patients_->write_date(plikWyj);
 	test_date_->write_date(plikWyj);
-	signal_->write_date(plikWyj);
+	//signal_->write_date(plikWyj);
 
 	plikWyj.close();
 }
 
 /** virtual method for read date from file */
-void HolterABPM::read_date() {
-	ifstream plikWej ( "Holter_ABPM_result.txt" ) ;
+void HolterABPM::read_date(ifstream& file) {
 	string tmp;
+	ifstream plikWej ( "Holter_ABPM_result.txt" ) ;
 	if(!plikWej)
 		throw OpenFileError ("FILE NOT OPEN");
+
+	getline(file, tmp);
 
 	plikWej>>tmp;
 	plikWej>>mode_;
@@ -294,7 +304,7 @@ void HolterABPM::read_date() {
 	new_recorder_.read_date(plikWej);
 	patients_->read_date(plikWej);
 	test_date_->read_date(plikWej);
-	signal_->read_date(plikWej);
+	//signal_->read_date(plikWej);
 
 	plikWej.close();
 }

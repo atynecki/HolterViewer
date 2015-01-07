@@ -53,17 +53,24 @@ ostream & operator<<(std::ostream & os, const RecorderEKG & recorder){
 }
 
 /** virtual method for write date to file */
-void RecorderEKG::write_date(ofstream file) {
+void RecorderEKG::write_date(ofstream& file) {
 	file<<producer_<<","<<model_<<","<<serial_number_<<","<<sampling_<<","<<channel_number_<<endl;
 	if(!file)
-		throw WriteFileError ("WRTIE ERROR");
+		throw WriteFileError ("WRITE ERROR");
 }
 
 /** virtual method for read date from file */
-void RecorderEKG::read_date(ifstream file) {
-	file>>producer_>>model_>>serial_number_>>sampling_>>channel_number_;
-	if(!file) { }
-		throw ReadFileError ("READ ERROR");
+void RecorderEKG::read_date(ifstream& file) {
+	string read_temp;
+	getline(file, read_temp);
+	if(!file)
+			throw ReadFileError ("READ ERROR");
+
+	producer_ = find_word(read_temp, 1);
+	model_ = find_word(read_temp, 2);
+	serial_number_ = atoi(find_word(read_temp, 3).c_str());
+	sampling_ = atoi(find_word(read_temp, 4).c_str());
+	channel_number_ = atoi(find_word(read_temp, 5).c_str());
 }
 
 /** no arguments constructor */
@@ -110,15 +117,22 @@ ostream & operator<<(std::ostream & os, const RecorderABPM & recorder){
 }
 
 /** virtual method for write date to file */
-void RecorderABPM::write_date(ofstream file) {
+void RecorderABPM::write_date(ofstream& file) {
 	file<<producer_<<","<<model_<<","<<serial_number_<<","<<sampling_<<","<<unit_<<endl;
 	if(!file)
 		throw WriteFileError ("WRITE ERROR");
 }
 
 /** virtual method for read date from file */
-void RecorderABPM::read_date(ifstream file) {
-	file>>producer_>>model_>>serial_number_>>sampling_>>unit_;
+void RecorderABPM::read_date(ifstream& file) {
+	string read_temp;
+	getline(file, read_temp);
 	if(!file)
 		throw ReadFileError ("READ ERROR");
+
+	producer_ = find_word(read_temp, 1);
+	model_ = find_word(read_temp, 2);
+	serial_number_ = atoi(find_word(read_temp, 3).c_str());
+	sampling_ = atoi(find_word(read_temp, 4).c_str());
+	unit_ =find_word(read_temp, 5);
 }

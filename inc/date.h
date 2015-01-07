@@ -6,26 +6,29 @@
 
 #include <iostream>
 #include <fstream>
+#include <array>
+#include <utility>
+
+#include "error.h"
+#include "app_service.h"
 
 using namespace std;
+const size_t array_size = 3;
 
 class Date {
-	//przerobić na kontener
-	int day_;
-	int month_;
-	int year_;
+	array<int, array_size>date_;
 public:
 	Date();
 	Date(int r, int m, int d);
 	Date(const Date & date);
 
 	Date & operator=(const Date &date);
-	bool operator<(const Date &date)const;
+	bool operator<(Date &date);
 
 	friend ostream & operator<<(std::ostream & os, const Date & date);
 
-	void write_date(ofstream file);
-	void read_date(ifstream file);
+	void write_date(ofstream& file);
+	void read_date(ifstream& file);
 };
 
 #endif /* DATE_H_ */
