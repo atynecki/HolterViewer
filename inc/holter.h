@@ -18,9 +18,9 @@ protected:
 	Holter (Holter &holter);
 	Holter & operator=(Holter &holter);
 public:
-	Date *test_date_;
-	unique_ptr <Patient> patients_;
-	Signal<int, int> *signal_;
+	Date test_date_;
+	Patient patients_;
+	vector <Signal<int, int>> signal_;
 
 	Holter();
 	Holter(const Date &date, const Patient &patient, const Signal<int, int> &signal);
@@ -28,14 +28,14 @@ public:
 	virtual ~Holter();
 
 	virtual void show_date () = 0;
-	virtual void write_date (ofstream& file) = 0;
-	virtual void read_date (ifstream& file) = 0;
+	virtual void write_date () = 0;
+	virtual void read_date () = 0;
 
 };
 
 class HolterEKG: public Holter {
 	RecorderEKG new_recorder_;
-	int signal_number_;
+	unsigned signal_number_;
 public:
 	HolterEKG();
 	HolterEKG(const Date &date, const Patient &patient, const Signal<int, int>* signal, const RecorderEKG recorder, int signal_num);
@@ -45,8 +45,8 @@ public:
 	virtual ~HolterEKG();
 
 	virtual void show_date ();
-	virtual void write_date (ofstream& file);
-	virtual void read_date (ifstream& file);
+	virtual void write_date ();
+	virtual void read_date ();
 };
 
 class HolterABPM: public Holter {
@@ -61,8 +61,8 @@ public:
 	virtual ~HolterABPM();
 
 	virtual void show_date ();
-	virtual void write_date (ofstream& file);
-	virtual void read_date (ifstream& file);
+	virtual void write_date ();
+	virtual void read_date ();
 };
 
 #endif /* HOLTER_H_ */

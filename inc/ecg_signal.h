@@ -16,9 +16,10 @@ using namespace std;
 
 template <typename Elt1, typename Elt2>
 class Signal {
-	vector<pair<Elt1, Elt2>> signal_;
 public:
+	vector<pair<Elt1, Elt2>> signal_;
 	Signal(){};
+	Signal (vector<pair<Elt1,Elt2>> sig);
 	Signal(vector<Elt1> sample, vector<Elt2> time);
 	Signal(const Signal &sig);
 
@@ -46,7 +47,7 @@ template <typename Elt1, typename Elt2>
 pair<Elt1, Elt2> find_min(const Signal<Elt1,Elt2>& sig);
 
 template <typename Elt1, typename Elt2>
-double calculate_frequance(const Signal<Elt1,Elt2>& sig);
+float calculate_frequance(const Signal<Elt1,Elt2>& sig, int sampling);
 
 #include "ecg_signal_impl.h"
 

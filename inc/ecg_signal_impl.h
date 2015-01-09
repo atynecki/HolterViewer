@@ -6,7 +6,14 @@
 
 using namespace std;
 
-/** arguments (all) constructor */
+/** arguments (all) constructor 1*/
+template<typename Elt1, typename Elt2>
+Signal<Elt1, Elt2>::Signal(vector<pair<Elt1,Elt2>> sig) {
+	signal_ = sig;
+}
+
+
+/** arguments (all) constructor 2*/
 template<typename Elt1, typename Elt2>
 Signal<Elt1, Elt2>::Signal(vector<Elt1> sample, vector<Elt2> time) {
 	if (sample.size() != time.size())
@@ -119,6 +126,8 @@ void Signal<Elt1, Elt2>::read_date(ifstream& file) {
 		sample_signal.second = atoi(find_word(read_temp, 2).c_str());
 		signal_.push_back(sample_signal);
 	}
+
+	signal_.pop_back();
 }
 
 /** method for parse signal to signal sample and time sample*/
@@ -126,7 +135,7 @@ template <typename Elt1, typename Elt2>
 vector<Elt1> parse_signal(const vector<pair<Elt1, Elt2>> sig){
 	vector<Elt1> result;
 	for (unsigned i = 0; i <sig.size(); ++i)
-		result.push_back(get<0>(sig.signal_[i]));
+		result.push_back(get<0>(sig[i]));
 
 	return result;
 }
@@ -136,12 +145,13 @@ template<typename Elt1, typename Elt2>
 pair<Elt1, Elt2> find_max(const Signal<Elt1,Elt2>& sig){
 	vector<Elt1> signal_samples;
 	pair<Elt1, Elt2> result;
-	int place;
+	int position;
 
 	signal_samples = parse_signal(sig.signal_);
-	place = *max_element(signal_samples.begin(), signal_samples.end());
 
-	result = sig.signal_[place];
+	position = (int)(max_element(signal_samples.begin(), signal_samples.end()) - signal_samples.begin());
+
+	result = sig.signal_[position];
 
 	return result;
 }
@@ -150,28 +160,33 @@ template<typename Elt1, typename Elt2>
 pair<Elt1, Elt2> find_min(const Signal<Elt1,Elt2>& sig){
 	vector<Elt1> signal_samples;
 	pair<Elt1, Elt2> result;
-	int place;
+	int position;
 
 	signal_samples = parse_signal(sig.signal_);
-	place = *min_element(signal_samples.begin(), signal_samples.end());
 
-	result = sig.signal_[place];
+	position = (int)(min_element(signal_samples.begin(), signal_samples.end()) - signal_samples.begin());
+
+	result = sig.signal_[position];
 
 	return result;
 }
 /** method for calculate frequance in signal*/
 template<typename Elt1, typename Elt2>
-double calculate_frequance(const Signal<Elt1,Elt2>& sig){
+float calculate_frequance(const Signal<Elt1,Elt2>& sig, int sampling){
 	vector<Elt1> signal_samples;
-	double result;
-	Elt1 begin;
-	Elt1 end;
+	float result;
+	int length;
+	Elt2 begin;
 
 	signal_samples = parse_signal(sig.signal_);
-	begin = *signal_samples.begin();
-	end = find(signal_samples.begin()+1, signal_samples.end(), begin);
 
-	result = 1/(end - begin);
+	if (signal_samples.size < 2*sampling)
+		//throw WrongSizeError ("TOO SHORT SIGNAL");
+
+	begin = max_element (signal_samples.begin(),signal_samples.begin()+sampling);
+	length = (int)(find(++signal_samples.begin(), signal_samples.end(), begin) - signal_samples.begin());
+
+	result = (float)(1)/(float)length;
 
 	return result;
 }
