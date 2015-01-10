@@ -7,13 +7,33 @@
 #include "holter.h"
 #include "app_service.h"
 #include "ecg_signal.h"
+#include "Point.h"
+#include "Line.h"
+#include "Frame.h"
 
-using namespace std;
-
+//using namespace std;
+using namespace Graph_lib;
 
 int main () try
 {
+	Point point1(2,2,'x');
+	Point point2(10,1,'x');
+	vector<string> text_massage;
+	text_massage.push_back("Artur");
+	text_massage.push_back("Tynecki");
+	text_massage.push_back("Tommorowland");
 
+	//Frame frame1(20,8, point2, '|');
+	Text_box text1(40, point2, '-',text_massage);
+	//Text_box text2("Artur");
+	text1.display();
+	//text2.display();
+	text1 = text1<<"Hello";
+	text1.display();
+	//Text_line line1(point1, 14, "Tynio");
+	//line1.draw();
+	//point1.draw();
+	//point2.draw();
 
 	/*RecorderEKG recorder_1(3, 6969,1024, "ASPEL", "ASPEKT");
 	RecorderABPM recorder_2("mmHg", 1003, 3, "CARDIO_TASK", "CT-08");

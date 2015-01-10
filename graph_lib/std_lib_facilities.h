@@ -1,8 +1,8 @@
 
 /* Standard lib with facilities */
 
-#ifndef H112
-#define H112 251113L
+#ifndef STD_LIB_FACILITIES_H
+#define STD_LIB_FACILITIES_H
 
 #include <iostream>
 #include <iomanip>
