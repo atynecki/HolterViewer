@@ -22,11 +22,6 @@
 #include <stdexcept>
 
 //------------------------------------------------------------------------------
-
-typedef long Unicode;
-
-//------------------------------------------------------------------------------
-
 using namespace std;
 
 template<class T> string to_string(const T& t)

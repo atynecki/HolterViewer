@@ -58,5 +58,16 @@ public:
 	}
 };
 
+class WrongSizeError: public Error {
+public:
+	WrongSizeError(){}
+	WrongSizeError( const WrongSizeError& er ): Error(er.what_ ){}
+	WrongSizeError( string what ): Error(what){};
+	virtual ~WrongSizeError(){}
+	virtual string get_error() const{
+	    return what_;
+	}
+};
+
 //kolejne przypadki błędów
 #endif /* ERROR_H_ */

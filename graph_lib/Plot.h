@@ -1,5 +1,4 @@
 
-
 /** Point class header file */
 
 #ifndef PLOT_H_
@@ -130,6 +129,21 @@ public:
 	}
 };
 
+class Title {
+protected:
+	string title_;
+	Text_box title_box_;
+public:
+	Title () { }
+	Title (string title){
+		title_box_ = Text_box(50, Point(10,0, '_'), '-', title);
+	}
+
+	void display_title (){
+		title_box_.display();
+	}
+};
+
 template <typename Elt1, typename Elt2>
 class Plot: public Space {
 public:
@@ -140,13 +154,12 @@ public:
 	Label y_label_;
 	vector<Elt1> y_values_;
 	vector<Elt2> x_values_;
-	string title_;
 	char marker_;
 
 
 	Plot(): axis_x_(), axis_y_(), marker_(0){ }
-	Plot(vector<Elt1> y_values, Label y_label, vector<Elt2> x_values, Label x_label, string title, char marker)
-		: marker_(marker), title_(title), y_values_(y_values), x_values_(x_values), x_label_(x_label), y_label_(y_label){
+	Plot(vector<Elt1> y_values, Label y_label, vector<Elt2> x_values, Label x_label, char marker)
+		: marker_(marker), y_values_(y_values), x_values_(x_values), x_label_(x_label), y_label_(y_label){
 		this->width_ = (x_values.size()*+1)*3+4;
 		Axis_x <Elt2> axisx(x_values);
 		axis_x_ = axisx;

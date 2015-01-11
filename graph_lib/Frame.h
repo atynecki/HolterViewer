@@ -89,14 +89,17 @@ public:
 	}
 
 	Text_box(int width, Point start_point, char marker, string text): text_lines_num_(1){
+		if(width == 0)
+			width_ = text.size()+4;
+		else
+			width_ = width;
+
 		if(text.size() > width -2)
-			return;
-			//throw WrongSizeError ("TEXT LONGER THEN LINE");
+			throw WrongSizeError ("TEXT LONGER THEN LINE");
 
 		text_massage_.push_back(text);
 		start_point_ = start_point;
 		start_point_.sign_ = marker;
-		width_ = text.size()+4;
 		height_ = text_lines_num_+2;
 		marker_ = marker;
 
@@ -108,15 +111,18 @@ public:
 	}
 
 	Text_box(int width, Point start_point, char marker, vector<string> text){
-			if(text.size() > width -2)
-				return;
-				//throw WrongSizeError ("TEXT LONGER THEN LINE");
+			if(width == 0)
+				width_ = calculate_width(text)+4;
+			else
+				width_ = width;
+
+			if(calculate_width(text) > width_ -2)
+				throw WrongSizeError ("TEXT LONGER THEN LINE");
 
 			text_lines_num_ = text.size();
 			text_massage_ = text;
 			start_point_ = start_point;
 			start_point_.sign_ = marker;
-			width_ = calculate_width(text)+4;
 			height_ = text_lines_num_+2;
 			marker_ = marker;
 
@@ -124,8 +130,7 @@ public:
 			for (unsigned i = 0; i<text_lines_num_; ++i)
 				lines_.push_back(Text_line(Point(start_point_.x,1,marker_),width_,text_massage_.at(i)));
 			lines_.push_back(Sign_line(Point(start_point_.x,1,marker_),width_,marker_));
-
-		}
+	}
 
 
 	Text_box(const Text_box& box){

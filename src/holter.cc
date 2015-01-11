@@ -94,8 +94,8 @@ void HolterEKG::show_date() {
 }
 
 /** virtual method for write date to file */
-void HolterEKG::write_date() {
-	ofstream plikWyj ( "Holter_EKG_result.txt" ) ;
+void HolterEKG::write_date(string file_name) {
+	ofstream plikWyj (file_name) ;
 	if(!plikWyj)
 		throw OpenFileError ("FILE NOT OPEN");
 
@@ -119,7 +119,7 @@ void HolterEKG::write_date() {
 }
 
 /** virtual method for read date from file */
-void HolterEKG::read_date() {
+void HolterEKG::read_date(string file_name) {
 	string tmp;
 	pair<int,int> signal_end(0,0);
 	Signal<int, int> signal_tab;
@@ -128,7 +128,7 @@ void HolterEKG::read_date() {
 	vector<pair<int, int>>::iterator head;
 	vector<pair<int, int>>::iterator tail;
 
-	ifstream plikWej ( "Holter_EKG_result.txt" ) ;
+	ifstream plikWej (file_name) ;
 	if(!plikWej)
 		throw OpenFileError ("FILE NOT OPEN");
 
@@ -223,8 +223,8 @@ void HolterABPM::show_date() {
 }
 
 /** virtual method for write date to file */
-void HolterABPM::write_date() {
-	ofstream plikWyj ( "Holter_ABPM_result.txt" ) ;
+void HolterABPM::write_date(string file_name) {
+	ofstream plikWyj (file_name) ;
 	if(!plikWyj)
 		throw OpenFileError ("FILE NOT OPEN");
 
@@ -245,9 +245,9 @@ void HolterABPM::write_date() {
 }
 
 /** virtual method for read date from file */
-void HolterABPM::read_date() {
+void HolterABPM::read_date(string file_name) {
 	string tmp;
-	ifstream plikWej ( "Holter_ABPM_result.txt" ) ;
+	ifstream plikWej (file_name) ;
 	if(!plikWej)
 		throw OpenFileError ("FILE NOT OPEN");
 

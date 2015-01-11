@@ -13,6 +13,7 @@
 #include "Line.h"
 #include "Frame.h"
 #include "Plot.h"
+#include "GUI.h"
 
 
 #endif /* GRAPH_LIB_FILE_H_ */

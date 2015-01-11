@@ -130,12 +130,22 @@ void Signal<Elt1, Elt2>::read_date(ifstream& file) {
 	signal_.pop_back();
 }
 
-/** method for parse signal to signal sample and time sample*/
+/** method for get value signal form hole signal*/
 template <typename Elt1, typename Elt2>
-vector<Elt1> parse_signal(const vector<pair<Elt1, Elt2>> sig){
+vector<Elt1> get_value_signal(const vector<pair<Elt1, Elt2>> sig){
 	vector<Elt1> result;
 	for (unsigned i = 0; i <sig.size(); ++i)
 		result.push_back(get<0>(sig[i]));
+
+	return result;
+}
+
+/** method for get time signal form hole signal*/
+template <typename Elt1, typename Elt2>
+vector<Elt2> get_time_signal(const vector<pair<Elt1, Elt2>> sig){
+	vector<Elt2> result;
+	for (unsigned i = 0; i <sig.size(); ++i)
+		result.push_back(get<1>(sig[i]));
 
 	return result;
 }

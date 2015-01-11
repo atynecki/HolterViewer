@@ -28,8 +28,8 @@ public:
 	virtual ~Holter();
 
 	virtual void show_date () = 0;
-	virtual void write_date () = 0;
-	virtual void read_date () = 0;
+	virtual void write_date (string file_name) = 0;
+	virtual void read_date (string file_name) = 0;
 
 };
 
@@ -44,15 +44,16 @@ public:
 
 	virtual ~HolterEKG();
 
+	inline unsigned get_signal_num () {return signal_number_;};
 	virtual void show_date ();
-	virtual void write_date ();
-	virtual void read_date ();
+	virtual void write_date (string file_name);
+	virtual void read_date (string file_name);
 };
 
 class HolterABPM: public Holter {
-	RecorderABPM new_recorder_;
 	string mode_;
 public:
+	RecorderABPM new_recorder_;
 	HolterABPM();
 	HolterABPM(const Date &date, const Patient &patient, const Signal<int, int> &signal, const RecorderABPM recorder, string mode);
 	HolterABPM(HolterABPM &holter);
@@ -61,8 +62,8 @@ public:
 	virtual ~HolterABPM();
 
 	virtual void show_date ();
-	virtual void write_date ();
-	virtual void read_date ();
+	virtual void write_date (string file_name);
+	virtual void read_date (string file_name);
 };
 
 #endif /* HOLTER_H_ */

@@ -53,6 +53,8 @@ public:
 
 	RecorderABPM & operator=(const RecorderABPM &recorder);
 
+	inline string get_unit() {return unit_;};
+
 	friend ostream & operator<<(std::ostream & os, const RecorderABPM & recorder);
 
 	virtual void write_date(ofstream& file);

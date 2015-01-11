@@ -1,8 +1,7 @@
 
 /** Main source file to test classes */
 
-#include <iostream>
-#include <string>
+#include "std_lib_facilities.h"
 
 #include "holter.h"
 #include "app_service.h"
@@ -11,102 +10,272 @@
 #include "Line.h"
 #include "Frame.h"
 #include "Plot.h"
+#include "GUI.h"
 
+main_options options;
+HolterEKG holter_ekg_global;
+HolterABPM holter_abpm_global;
 
-//using namespace std;
+using namespace std;
 using namespace Graph_lib;
 
 int main () try
 {
-	//Label_line lline1(10, "Artur");
-	//lline1.draw();
-	vector<int> x = {10,20,30,40,50,60,70,80,90, 100};
-	vector<int> y = {11,12,13,14,15,13,17,112,119};
-	Label y_label("sample", "BPM");
-	Label x_label("time", "s");
-	Plot<int,int> plot1(y, y_label, x, x_label, "TEST", 'x');
-	plot1.display_plot();
-	//Axis_line  <int> axisx(x);
-	//axisx.draw();
+	char ch;
+	int i;
+	string str;
+	bool exit = false;
+	unsigned counter;
 
-	//vector<int> position = {2,14,20};
-	//Plot_line line4(30, "4", '|', position, 'x');
-	//int size = line4.line_.size();
-	//line4.draw();
-	//cout<<endl;
-	//Plot_line line5(30, "158", '|', position, 'x');
-	//int size = line4.line_.size();
-	//line5.draw();
-
-	//Simple_text_line line3(30, "Tynio");
-	//line3.draw();
-	//vector<int> values = {1,2,3,4,5,6,7,8,9,10};
-	///Axis_y<int> axisx(values, "time", "s");
-	//axisx.display();
-	//Point point1(2,2,'x');
-	//Point point2(10,1,'x');
-	//vector<string> text_massage;
-	//text_massage.push_back("Artur");
-	//text_massage.push_back("Tynecki");
-	//text_massage.push_back("Tommorowland");
-
-	//Frame frame1(20,8, point2, '|');
-	//Text_box text1(40, point2, '-',text_massage);
-	//Text_box text2("Artur");
-	//text1.display();
-	//text2.display();
-	//text1 = text1<<"Hello";
-	//text1.display();
-	//Text_line line1(point1, 14, "Tynio");
-	//line1.draw();
-	//point1.draw();
-	//point2.draw();
-
-	/*RecorderEKG recorder_1(3, 6969,1024, "ASPEL", "ASPEKT");
-	RecorderABPM recorder_2("mmHg", 1003, 3, "CARDIO_TASK", "CT-08");
-
-	Patient patient_1(46, 182, 102, "Jan", "Kowalski", "74023086385");
-	patient_1.set_id_number();
-
-	Date date_1(2014,11,14);
-
-	vector<int> sample_2 = {1,3,5,7,9,1,13};
-	vector<int> time_2 = {2,4,6,8,10,12,14};
-	Signal<int, int> signal2(sample_2, time_2);
-
-	vector <int> sample_3 = {1,4,7,9,14,17,11,9};
-	vector <int> time_3 = {1,2,3,4,5,6,7,8};
-	Signal<int, int> signal3(sample_3, time_3);
-
-	Signal<int, int> signal_tab[2] = {signal2, signal3};
-
-	HolterEKG holter1(date_1, patient_1, signal_tab, recorder_1, 2);
-
-	holter1.show_date();
+	cout<<"Program start"<<endl;
+	Welcome_window win1("HolterViewer", "Artur Tynecki");
+	win1.display_win();
 	cout<<endl;
+	cout<<"Enter here >";
+	cin>>ch;
+	ch = toupper(ch);
+	while ((ch != 'E') & (ch != 'A')){
+		cout<<"Wrong date! Try again"<<endl;
+		cout<<"Enter here >";
+		cin>>ch;
+		ch = toupper(ch);
+	}
 
-	holter1.write_date();
+	/** HOLTER EKG */
+	if(ch == 'E'){
+		do {
+			Main_window mw_ekg("EKG");
+			mw_ekg.display_win();
+			cout<<endl;
+			cout<<"Enter here >";
+			cin>>i;
 
-	HolterEKG holter2;
-	holter2.read_date();
-	holter2.show_date();*/
+			while ((i != 1) & (i != 2) & (i != 3) & (i != 4)){
+				cout<<"Wrong date! Try again"<<endl;
+				cout<<"Enter here >";
+				cin>>i;
+			}
 
-	//string str = "Artur,Tynecki,Tynio";
-	//string result;
-	//result = find_word(str, 3);
-	//cout<<result;
+			switch (i) {
+				case example: {
+					RecorderEKG recorder(3, 6969,1024, "ASPEL", "ASPEKT");
+					Patient patient(46, 182, 102, "Jan", "Kowalski", "74023086385");
+					patient.set_id_number();
+					Date date(2014,1,16);
+					vector <int> sample = {1,4,7,9,14,17,11,9};
+					vector <int> time = {1,2,3,4,5,6,7,8};
+					Signal<int, int> signal(sample, time);
+					HolterEKG holter_ekg_example(date, patient, &signal, recorder, 1);
+					holter_ekg_global = holter_ekg_example;
+					holter_ekg_example.show_date();
+					cout<<endl;
+					Plot_window <int, int> plot_example("Holter EKG example plot", sample, "V", time, "s");
+					plot_example.display_win();
+					cout<<"Write date to file? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					while ((ch != 'T') & (ch != 'N')){
+						cout<<"Wrong answer! Try again"<<endl;
+						cout<<"Enter here >";
+						cin>>ch;
+						ch = toupper(ch);
+					}
 
-	//Date date_1(2014,11,14);
-	//Date date_2(2014,9,1);
-	//bool small_check = false;
-	//small_check = date_2 < date_1;
+					if (ch == 'T'){
+						cout<<"Write the file name:"<<endl;
+						cout<<"Enter here >";
+						cin>>str;
+						holter_ekg_example.write_date(str);
+						cout<<endl;
+						cout<<"Date write complete"<<endl;
+					}
 
-	//pair<int, int> result;
-	//float freq;
-	//freq = calculate_frequance(signal2);
-	//result = find_min(signal2);
-	//display_pair(result);
+					cout<<"Finish program? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					if (ch == 'T')
+						exit = true;
+					else
+						exit = false;
+				}
+				break;
 
+				case enter_date:{
+
+				}
+					break;
+				case read_date:{
+					HolterEKG holter_ekg_read;
+					cout<<"Write the file name:"<<endl;
+					cout<<"Enter here >";
+					cin>>str;
+					holter_ekg_read.read_date(str);
+					cout<<endl;
+					cout<<"Date read complete"<<endl;
+					holter_ekg_global = holter_ekg_read;
+
+					cout<<"Display date? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					while ((ch != 'T') & (ch != 'N')){
+						cout<<"Wrong answer! Try again"<<endl;
+						cout<<"Enter here >";
+						cin>>ch;
+						ch = toupper(ch);
+					}
+
+					if (ch == 'T'){
+						holter_ekg_read.show_date();
+						cout<<endl;
+						vector<int> sample;
+						vector<int> time;
+						for(counter =0; counter<holter_ekg_read.get_signal_num(); ++counter){
+							sample = get_value_signal(holter_ekg_read.signal_[counter].signal_);
+							time = get_time_signal(holter_ekg_read.signal_[counter].signal_);
+							Plot_window <int, int> plot_example("Holter EKG read plot", sample, "V", time, "s");
+							plot_example.display_win();
+						}
+					}
+
+					cout<<"Finish program? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					if (ch == 'T')
+						exit = true;
+					else
+						exit = false;
+				}
+					break;
+				case exit_program:
+					cout<<"Finish program? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					if (ch == 'T')
+						exit = true;
+					else
+						exit = false;
+					break;
+			}
+		}
+		while(!exit);
+
+	}
+
+	/** HOLTER ABPM */
+	else if (ch == 'A'){
+		do {
+			Main_window mw_abpm("ABPM");
+			mw_abpm.display_win();
+			cout<<endl;
+			cout<<"Enter here:";
+			cin>>i;
+			while ((i != 1) & (i != 2) & (i != 3) & (i != 4)){
+				cout<<"Wrong date! Try again"<<endl;
+				cout<<"Enter here:";
+				cin>>i;
+			}
+
+			switch (i) {
+				case example:{
+					RecorderABPM recorder("mmHg", 1003, 0.1, "Medi_tech", "ABPM-05");
+					Patient patient(46, 182, 102, "Jan", "Kowalski", "74023086385");
+					patient.set_id_number();
+					Date date(2014,1,16);
+					vector <int> sample = {12,14,20,4,7,17,11,2};
+					vector <int> time = {1,2,3,4,5,6,7,8};
+					Signal<int, int> signal(sample, time);
+					HolterABPM holter_abpm_example(date, patient, signal, recorder, "normal");
+					holter_abpm_global = holter_abpm_example;
+					holter_abpm_example.show_date();
+					cout<<endl;
+					Plot_window <int, int> plot_example("Holter ABPM example plot", sample, "V", time, "s");
+					plot_example.display_win();
+					cout<<"Write date to file? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					while ((ch != 'T') & (ch != 'N')){
+						cout<<"Wrong answer! Try again"<<endl;
+						cout<<"Enter here >";
+						cin>>ch;
+						ch = toupper(ch);
+					}
+
+					if (ch == 'T'){
+						cout<<"Write the file name:"<<endl;
+						cout<<"Enter here >";
+						cin>>str;
+						holter_abpm_example.write_date(str);
+						cout<<endl;
+						cout<<"Date write complete"<<endl;
+					}
+
+					cout<<"Finish program? [T/N] >";
+					cin>>ch;
+					ch = toupper(ch);
+					if (ch == 'T')
+						exit = true;
+					else
+						exit = false;
+				}
+				break;
+			case enter_date:
+				break;
+			case read_date:{
+				HolterABPM holter_abpm_read;
+				cout<<"Write the file name:"<<endl;
+				cout<<"Enter here >";
+				cin>>str;
+				holter_abpm_read.read_date(str);
+				cout<<endl;
+				cout<<"Date read complete"<<endl;
+				holter_abpm_global = holter_abpm_read;
+
+				cout<<"Display date? [T/N] >";
+				cin>>ch;
+				ch = toupper(ch);
+				while ((ch != 'T') & (ch != 'N')){
+					cout<<"Wrong answer! Try again"<<endl;
+					cout<<"Enter here >";
+					cin>>ch;
+					ch = toupper(ch);
+				}
+
+				if (ch == 'T'){
+					holter_abpm_read.show_date();
+					cout<<endl;
+					vector<int> sample;
+					vector<int> time;
+					sample = get_value_signal(holter_abpm_read.signal_[0].signal_);
+					time = get_time_signal(holter_abpm_read.signal_[0].signal_);
+					Plot_window <int, int> plot_example("Holter ABPM read plot", sample, holter_abpm_read.new_recorder_.get_unit(), time, "s");
+					plot_example.display_win();
+				}
+
+				cout<<"Finish program? [T/N] >";
+				cin>>ch;
+				ch = toupper(ch);
+				if (ch == 'T')
+					exit = true;
+				else
+					exit = false;
+			}
+
+				break;
+			case exit_program:{
+				cout<<"Finish program? [T/N] >";
+				cin>>ch;
+				ch = toupper(ch);
+				if (ch == 'T')
+					exit = true;
+				else
+				exit = false;
+			}
+				break;
+			}
+		}while(!exit);
+	}
+
+	cout<<"Program stop"<<endl;
 	return 0;
 }
 

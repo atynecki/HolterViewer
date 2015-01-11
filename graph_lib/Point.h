@@ -15,6 +15,22 @@ public:
 	Point(int xx, int yy, char sign) : x(xx), y(yy), sign_(sign) { }
 	Point() :x(0), y(0), sign_(0) { }
 
+
+	Point(const Point& pon){
+		x = pon.x;
+		y = pon.y;
+		sign_ = pon.sign_;
+	}
+
+	Point & operator=( const Point& pon){
+		if(this !=&pon){
+			x = pon.x;
+			y = pon.y;
+			sign_ = pon.sign_;
+		}
+		return *this;
+	}
+
 	void draw() {
 		for (int i =0; i<y; ++i)
 			cout<<endl;

@@ -38,7 +38,10 @@ template <typename Elt1, typename Elt2>
 void display_pair(pair<Elt1, Elt2> el);
 
 template <typename Elt1, typename Elt2>
-vector<Elt1> parse_signal(const Signal<Elt1,Elt2>& sig);
+vector<Elt1> get_value_signal(const Signal<Elt1,Elt2>& sig);
+
+template <typename Elt1, typename Elt2>
+vector<Elt2> get_time_signal(const Signal<Elt1,Elt2>& sig);
 
 template <typename Elt1, typename Elt2>
 pair<Elt1, Elt2> find_max(const Signal<Elt1,Elt2>& sig);
