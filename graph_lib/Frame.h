@@ -1,9 +1,6 @@
-/*
- * Frame.h
- *
- *  Created on: 9 sty 2015
- *      Author: tynio
- */
+
+
+/** Frame + Text box classes header file */
 
 #ifndef FRAME_H_
 #define FRAME_H_

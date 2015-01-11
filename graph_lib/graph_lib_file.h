@@ -12,6 +12,7 @@
 #include "Point.h"
 #include "Line.h"
 #include "Frame.h"
+#include "Plot.h"
 
 
 #endif /* GRAPH_LIB_FILE_H_ */

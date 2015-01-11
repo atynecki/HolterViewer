@@ -10,26 +10,53 @@
 #include "Point.h"
 #include "Line.h"
 #include "Frame.h"
+#include "Plot.h"
+
 
 //using namespace std;
 using namespace Graph_lib;
 
 int main () try
 {
-	Point point1(2,2,'x');
-	Point point2(10,1,'x');
-	vector<string> text_massage;
-	text_massage.push_back("Artur");
-	text_massage.push_back("Tynecki");
-	text_massage.push_back("Tommorowland");
+	//Label_line lline1(10, "Artur");
+	//lline1.draw();
+	vector<int> x = {10,20,30,40,50,60,70,80,90, 100};
+	vector<int> y = {11,12,13,14,15,13,17,112,119};
+	Label y_label("sample", "BPM");
+	Label x_label("time", "s");
+	Plot<int,int> plot1(y, y_label, x, x_label, "TEST", 'x');
+	plot1.display_plot();
+	//Axis_line  <int> axisx(x);
+	//axisx.draw();
+
+	//vector<int> position = {2,14,20};
+	//Plot_line line4(30, "4", '|', position, 'x');
+	//int size = line4.line_.size();
+	//line4.draw();
+	//cout<<endl;
+	//Plot_line line5(30, "158", '|', position, 'x');
+	//int size = line4.line_.size();
+	//line5.draw();
+
+	//Simple_text_line line3(30, "Tynio");
+	//line3.draw();
+	//vector<int> values = {1,2,3,4,5,6,7,8,9,10};
+	///Axis_y<int> axisx(values, "time", "s");
+	//axisx.display();
+	//Point point1(2,2,'x');
+	//Point point2(10,1,'x');
+	//vector<string> text_massage;
+	//text_massage.push_back("Artur");
+	//text_massage.push_back("Tynecki");
+	//text_massage.push_back("Tommorowland");
 
 	//Frame frame1(20,8, point2, '|');
-	Text_box text1(40, point2, '-',text_massage);
+	//Text_box text1(40, point2, '-',text_massage);
 	//Text_box text2("Artur");
-	text1.display();
+	//text1.display();
 	//text2.display();
-	text1 = text1<<"Hello";
-	text1.display();
+	//text1 = text1<<"Hello";
+	//text1.display();
 	//Text_line line1(point1, 14, "Tynio");
 	//line1.draw();
 	//point1.draw();
