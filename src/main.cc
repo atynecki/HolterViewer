@@ -25,10 +25,11 @@ int main () try
 	int i;
 	string str;
 	bool exit = false;
+	bool form_exit = false;
 	unsigned counter;
 
 	cout<<"Program start"<<endl;
-	Welcome_window win1("HolterViewer", "Artur Tynecki");
+	Welcome_window win1("HolterViewer v1.0", "Artur Tynecki");
 	win1.display_win();
 	cout<<endl;
 	cout<<"Enter here >";
@@ -51,6 +52,8 @@ int main () try
 			cin>>i;
 
 			while ((i != 1) & (i != 2) & (i != 3) & (i != 4)){
+				cin.clear();
+				cin.ignore(numeric_limits<int>::max(), '\n');
 				cout<<"Wrong date! Try again"<<endl;
 				cout<<"Enter here >";
 				cin>>i;
@@ -101,6 +104,81 @@ int main () try
 				break;
 
 				case enter_date:{
+					HolterEKG holter_ekg_form;
+					Form_window form("EKG");
+					do {
+						form.display_win();
+						cout<<endl;
+						cout<<"Enter here >";
+						cin>>i;
+						while ((i != 1) & (i != 2) & (i != 3) & (i != 4) & (i != 5) & (i != 6)){
+							cin.clear();
+							cin.ignore(numeric_limits<int>::max(), '\n');
+							cout<<"Wrong date! Try again"<<endl;
+							cout<<"Enter here:";
+							cin>>i;
+						}
+						switch (i) {
+							case date: {
+								Date_form_window form;
+								form.display_win();
+								form.enter_data();
+								Date date(form.day_,form.month_,form.year_);
+								holter_ekg_form.test_date_ = date;
+								cout<<"Press Enter to continue"<<endl;
+								cin.get(); //zrobić poprawna obsługe
+							}
+							break;
+							case patient: {
+								Patient_form_window form;
+								form.display_win();
+								form.enter_data();
+								Patient patient(form.age_, form.growth_, form.weight_, form.name_, form.last_name_, form.pesel_);
+								holter_ekg_form.patients_ = patient;
+								cout<<"Press Enter to continue"<<endl;
+								//
+							}
+							break;
+							case recorder: {
+								Recorder_form_window form("EKG");
+								form.display_win();
+								form.enter_data();
+								RecorderEKG recorder(form.channel_number_,form.serial_number_,form.sampling_,form.producer_,form.model_);
+								holter_ekg_form.new_recorder_ = recorder;
+								cout<<"Press Enter to continue"<<endl;
+								//cin>>i;
+							}
+							break;
+							case signal: {
+								Signal_form_window form;
+								form.display_win();
+								form.enter_data();
+								Signal<int,int> signal(form.sample_, form.time_);
+								holter_ekg_form.signal_.push_back(signal);
+								cout<<"Press Enter to continue"<<endl;
+								//in.get();
+							}
+							break;
+							case display: {
+								holter_ekg_form.show_date();
+								cout<<"Press Enter to continue"<<endl;
+								//cin>>i;
+							}
+							break;
+							case exit_form: {
+								cout<<"Finish enter date? [T/N] >";
+								cin>>ch;
+								ch = toupper(ch);
+								if (ch == 'T')
+									form_exit = true;
+								else
+									form_exit = false;
+								break;
+							}
+							break;
+						}
+					}
+					while(!form_exit);
 
 				}
 					break;
@@ -170,8 +248,10 @@ int main () try
 			cout<<"Enter here:";
 			cin>>i;
 			while ((i != 1) & (i != 2) & (i != 3) & (i != 4)){
+				cin.clear();
+				cin.ignore(numeric_limits<int>::max(), '\n');
 				cout<<"Wrong date! Try again"<<endl;
-				cout<<"Enter here:";
+				cout<<"Enter here: >";
 				cin>>i;
 			}
 
@@ -218,7 +298,41 @@ int main () try
 						exit = false;
 				}
 				break;
-			case enter_date:
+			case enter_date: {
+				HolterABPM holter_abpm_form;
+				Form_window form("ABPM");
+				form.display_win();
+				cout<<endl;
+				cout<<"Enter here:";
+				cin>>i;
+				while ((i != 1) & (i != 2) & (i != 3) & (i != 4)){
+					cin.clear();
+					cin.ignore(numeric_limits<int>::max(), '\n');
+					cout<<"Wrong date! Try again"<<endl;
+					cout<<"Enter here >";
+					cin>>i;
+				}
+				switch (i) {
+					case date: {
+
+					}
+					break;
+					case patient: {
+
+					}
+					break;
+					case recorder: {
+
+					}
+					break;
+					case signal: {
+
+					}
+					break;
+				}
+
+
+			}
 				break;
 			case read_date:{
 				HolterABPM holter_abpm_read;
@@ -275,7 +389,9 @@ int main () try
 		}while(!exit);
 	}
 
-	cout<<"Program stop"<<endl;
+	Close_window close;
+	close.display_win();
+
 	return 0;
 }
 

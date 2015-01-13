@@ -34,9 +34,9 @@ public:
 };
 
 class HolterEKG: public Holter {
-	RecorderEKG new_recorder_;
 	unsigned signal_number_;
 public:
+	RecorderEKG new_recorder_;
 	HolterEKG();
 	HolterEKG(const Date &date, const Patient &patient, const Signal<int, int>* signal, const RecorderEKG recorder, int signal_num);
 	HolterEKG(HolterEKG &holter);

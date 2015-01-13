@@ -20,6 +20,7 @@
 #include <regex>
 #include <random>
 #include <stdexcept>
+#include <stdlib.h>
 
 //------------------------------------------------------------------------------
 using namespace std;

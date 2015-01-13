@@ -4,7 +4,6 @@
 #ifndef PLOT_H_
 #define PLOT_H_
 
-
 #include "std_lib_facilities.h"
 #include "Point.h"
 #include "Line.h"
