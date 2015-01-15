@@ -3,10 +3,8 @@
 #ifndef RECORDER_H_
 #define RECORDER_H_
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <cstdlib>
+#include "std_lib_facilities.h"
+
 #include "error.h"
 #include "app_service.h"
 

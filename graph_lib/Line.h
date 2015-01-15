@@ -5,10 +5,8 @@
 #define LINE_H_
 
 #include "std_lib_facilities.h"
+
 #include "Point.h"
-
-//dopisać operatory kopiujacy i =
-
 
 namespace Graph_lib {
 
@@ -19,6 +17,23 @@ public:
 	unsigned lenght_;
 	Line(): lenght_(0) { start_point_ = Point(); }
 	Line(Point start_point, int lenght): start_point_(start_point), lenght_(lenght) { }
+
+	Line(const Line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+	}
+
+	Line & operator=( const Line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+		}
+
+		return *this;
+	}
+
 
 	void draw(){
 		for(unsigned i = 0; i<lenght_; ++i)
@@ -36,6 +51,24 @@ public:
 		for(unsigned i = 0; i<lenght_; ++i)
 			line_.push_back(Point(0,0,sign_));
 	}
+
+	Sign_line(const Sign_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+		sign_ = line.sign_;
+	}
+
+	Sign_line & operator=( const Sign_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+			sign_ = line.sign_;
+		}
+
+		return *this;
+	}
 };
 
 class Middle_line: public Sign_line {
@@ -51,6 +84,23 @@ public:
 		line_.push_back(Point(0,0,sign_));
 	}
 
+	Middle_line(const Middle_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+		sign_ = line.sign_;
+	}
+
+	Middle_line & operator=( const Middle_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+			sign_ = line.sign_;
+		}
+
+		return *this;
+	}
 };
 
 class Simple_text_line: public Line {
@@ -58,13 +108,28 @@ public:
 	Simple_text_line(): Line() { }
 	Simple_text_line(int lenght, string text) {
 		if(text.size() > lenght -2)
-			return;
-			//throw WrongSizeError ("TEXT LONGER THEN LINE");
+			throw WrongSizeError ("TEXT LONGER THEN LINE");
 		lenght_ = lenght;
 	for(unsigned i = 0; i<text.size(); ++i)
 		line_.push_back(Point(0,0,text.at(i)));
 	for(unsigned i = 0; i<(lenght_ - text.size()); ++i)
 			line_.push_back(Point(0,0,' '));
+	}
+
+	Simple_text_line(const Simple_text_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+	}
+
+	Simple_text_line & operator=( const Simple_text_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+		}
+
+		return *this;
 	}
 };
 
@@ -74,8 +139,7 @@ public:
 	Text_line(): Sign_line() { }
 	Text_line(Point start_point, int lenght, string text){
 		if(text.size() > lenght -2)
-			return;
-			//throw WrongSizeError ("TEXT LONGER THEN LINE");
+			throw WrongSizeError ("TEXT LONGER THEN LINE");
 		start_point_ = start_point;
 		lenght_ = lenght;
 		sign_ = start_point.sign_;
@@ -121,6 +185,24 @@ public:
 
 		line_.push_back(Point(0,0,sign_));
 	}
+
+	Text_line(const Text_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+		sign_ = line.sign_;
+	}
+
+	Text_line & operator=( const Text_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+			sign_ = line.sign_;
+		}
+
+		return *this;
+	}
 };
 
 template <typename Elt1>
@@ -150,8 +232,24 @@ public:
 				line_.push_back(Point(0,0,value.at(2)));
 			}
 		}
-
 	}
+
+	Axis_line(const Axis_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+	}
+
+	Axis_line & operator=( const Axis_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+		}
+
+		return *this;
+	}
+
 };
 
 class Label_line: public Text_line {
@@ -163,6 +261,24 @@ public:
 			line_.push_back(Point(0,0,' '));
 		for(unsigned i = 0; i<text.size(); ++i)
 			line_.push_back(Point(0,0,text.at(i)));
+	}
+
+	Label_line(const Label_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+		sign_ = line.sign_;
+	}
+
+	Label_line & operator=( const Label_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+			sign_ = line.sign_;
+		}
+
+		return *this;
 	}
 };
 
@@ -198,6 +314,22 @@ public:
 
 		for(i = 0; i<lenght- tail_pos; ++i)
 			line_.push_back(Point(0,0,' '));
+	}
+
+	Plot_line(const Plot_line& line){
+		start_point_ = line.start_point_;
+		lenght_ = line.lenght_;
+		line_ = line.line_;
+	}
+
+	Plot_line & operator=( const Plot_line& line){
+		if(this !=&line){
+			start_point_ = line.start_point_;
+			lenght_ = line.lenght_;
+			line_ = line.line_;
+		}
+
+		return *this;
 	}
 };
 }

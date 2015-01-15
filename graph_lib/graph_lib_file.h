@@ -8,12 +8,10 @@
 #ifndef GRAPH_LIB_FILE_H_
 #define GRAPH_LIB_FILE_H_
 
-#include "std_lib_facilities.h"
 #include "Point.h"
 #include "Line.h"
 #include "Frame.h"
 #include "Plot.h"
 #include "GUI.h"
-
 
 #endif /* GRAPH_LIB_FILE_H_ */

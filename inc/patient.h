@@ -3,9 +3,8 @@
 #ifndef PATIENT_H_
 #define PATIENT_H_
 
-#include <iostream>
-#include <string>
-#include <fstream>
+#include "std_lib_facilities.h"
+
 #include "error.h"
 #include "app_service.h"
 

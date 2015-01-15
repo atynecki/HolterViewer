@@ -22,3 +22,22 @@ string find_word(string line, int word_number)
 	return temp;
 }
 
+void PressCToContinue()
+{
+	char ch;
+	cout << "Press 'C' to continue... " << endl;
+	cin>>ch;
+	ch = toupper(ch);
+	while (ch != 'C'){
+		cin.clear();
+		cout << "Press 'C' to continue... " << endl;
+		cin>>ch;
+	}
+ }
+
+template<class T> string to_string(const T& t)
+{
+	ostringstream os;
+	os << t;
+	return os.str();
+}

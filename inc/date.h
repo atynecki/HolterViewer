@@ -4,10 +4,7 @@
 #ifndef DATE_H_
 #define DATE_H_
 
-#include <iostream>
-#include <fstream>
-#include <array>
-#include <utility>
+#include "std_lib_facilities.h"
 
 #include "error.h"
 #include "app_service.h"

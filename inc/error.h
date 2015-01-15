@@ -69,5 +69,15 @@ public:
 	}
 };
 
-//kolejne przypadki błędów
+class CalculationError: public Error {
+public:
+	CalculationError(){}
+	CalculationError( const CalculationError& er ): Error(er.what_ ){}
+	CalculationError( string what ): Error(what){};
+	virtual ~CalculationError(){}
+	virtual string get_error() const{
+	    return what_;
+	}
+};
+
 #endif /* ERROR_H_ */

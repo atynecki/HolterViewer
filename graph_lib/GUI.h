@@ -181,7 +181,8 @@ public:
 		text_message.push_back("Holter device - 3");
 		text_message.push_back("Signal - 4");
 		text_message.push_back("Display data - 5");
-		text_message.push_back("Exit - 6");
+		text_message.push_back("Save data - 6");
+		text_message.push_back("Exit - 7");
 		Text_box close_frame(50, start_point_, '_', text_message);
 		frames_.push_back(close_frame);
 	}
@@ -386,6 +387,30 @@ public:
 			time_[i] = atoi(find_word(time_str, i).c_str());;
 		}
 		cout<<"Thank you"<<endl;
+	}
+};
+
+class Error_window: public Window {
+protected:
+	Error_window();
+	Error_window(const Error_window& e_win) { }
+	Error_window & operator=( const Error_window& e_win){ }
+public:
+	Error_window(string error_massage) {
+	start_point_ = Point (20,0, ' ');
+	vector<string> text_message;
+
+	text_message.push_back("Exception occurred!");
+	text_message.push_back(error_massage);
+	text_message.push_back("Program shuts down");
+	Text_box error_frame(100, start_point_, '!', text_message);
+	frames_.push_back(error_frame);
+	}
+
+	virtual ~Error_window() { }
+	virtual void display_win(){
+		frames_[0].display();
+		cout<<endl;
 	}
 };
 

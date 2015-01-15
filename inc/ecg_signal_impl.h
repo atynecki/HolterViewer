@@ -2,8 +2,6 @@
 
 #include "ecg_signal.h"
 
-//#include <algorithm>
-
 using namespace std;
 
 /** arguments (all) constructor 1*/
@@ -17,8 +15,7 @@ Signal<Elt1, Elt2>::Signal(vector<pair<Elt1,Elt2>> sig) {
 template<typename Elt1, typename Elt2>
 Signal<Elt1, Elt2>::Signal(vector<Elt1> sample, vector<Elt2> time) {
 	if (sample.size() != time.size())
-		return;
-		//throw WrongSizeError ("DIFFERENT SIZE OF ARGUMENT");
+		throw WrongSizeError ("DIFFERENT SIZE OF SIGNAL ARGUMENT");
 
 	pair<Elt1, Elt2> tmp;
 
@@ -120,8 +117,8 @@ void Signal<Elt1, Elt2>::read_date(ifstream& file) {
 
 	while (file.eof() != 1) {
 		getline(file, read_temp);
-		//if (!file)
-			//throw ReadFileError("READ ERROR");
+		if (!file)
+			throw ReadFileError("READ ERROR");
 		sample_signal.first = atoi(find_word(read_temp, 1).c_str());
 		sample_signal.second = atoi(find_word(read_temp, 2).c_str());
 		signal_.push_back(sample_signal);
@@ -191,11 +188,13 @@ float calculate_frequance(const Signal<Elt1,Elt2>& sig, int sampling){
 	signal_samples = parse_signal(sig.signal_);
 
 	if (signal_samples.size < 2*sampling)
-		//throw WrongSizeError ("TOO SHORT SIGNAL");
+		throw WrongSizeError ("TOO SHORT SIGNAL TO CALCULATE FREQ");
 
 	begin = max_element (signal_samples.begin(),signal_samples.begin()+sampling);
 	length = (int)(find(++signal_samples.begin(), signal_samples.end(), begin) - signal_samples.begin());
 
+	if(length ==0)
+		throw CalculationError("SIGNAL IS NOT PERIODIC");
 	result = (float)(1)/(float)length;
 
 	return result;

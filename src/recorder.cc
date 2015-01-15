@@ -64,7 +64,7 @@ void RecorderEKG::read_date(ifstream& file) {
 	string read_temp;
 	getline(file, read_temp);
 	if(!file)
-			throw ReadFileError ("READ ERROR");
+		throw ReadFileError ("READ ERROR");
 
 	producer_ = find_word(read_temp, 1);
 	model_ = find_word(read_temp, 2);

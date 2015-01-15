@@ -38,13 +38,8 @@ public:
 			cout<<" ";
 		cout<<sign_;
 	}
-
-	//Point& operator+=(Point d) { x+=d.x; y+=d.y; return *this; }
 };
 
-//inline bool operator==(Point a, Point b) { return a.x==b.x && a.y==b.y; }
-
-//inline bool operator!=(Point a, Point b) { return !(a==b); }
 
 }
 #endif

@@ -1,16 +1,11 @@
 
 /** Main source file to test classes */
 
-#include "std_lib_facilities.h"
+#include "app_service.h"
 
 #include "holter.h"
-#include "app_service.h"
-#include "ecg_signal.h"
-#include "Point.h"
-#include "Line.h"
-#include "Frame.h"
-#include "Plot.h"
-#include "GUI.h"
+
+#include "graph_lib_file.h"
 
 main_options options;
 HolterEKG holter_ekg_global;
@@ -88,7 +83,17 @@ int main () try
 						cout<<"Write the file name:"<<endl;
 						cout<<"Enter here >";
 						cin>>str;
-						holter_ekg_example.write_date(str);
+						try { holter_ekg_example.write_date(str); }
+						catch (const OpenFileError &of_error){
+							Error_window win_err(of_error.get_error());
+							win_err.display_win();
+							break;
+						}
+						catch (const WriteFileError &w_error){
+							Error_window win_err(w_error.get_error());
+							win_err.display_win();
+							break;
+						}
 						cout<<endl;
 						cout<<"Date write complete"<<endl;
 					}
@@ -111,7 +116,7 @@ int main () try
 						cout<<endl;
 						cout<<"Enter here >";
 						cin>>i;
-						while ((i != 1) & (i != 2) & (i != 3) & (i != 4) & (i != 5) & (i != 6)){
+						while ((i != 1) & (i != 2) & (i != 3) & (i != 4) & (i != 5) & (i != 6)& (i != 7)){
 							cin.clear();
 							cin.ignore(numeric_limits<int>::max(), '\n');
 							cout<<"Wrong date! Try again"<<endl;
@@ -125,8 +130,7 @@ int main () try
 								form.enter_data();
 								Date date(form.day_,form.month_,form.year_);
 								holter_ekg_form.test_date_ = date;
-								cout<<"Press Enter to continue"<<endl;
-								cin.get(); //zrobić poprawna obsługe
+								PressCToContinue();
 							}
 							break;
 							case patient: {
@@ -135,8 +139,7 @@ int main () try
 								form.enter_data();
 								Patient patient(form.age_, form.growth_, form.weight_, form.name_, form.last_name_, form.pesel_);
 								holter_ekg_form.patients_ = patient;
-								cout<<"Press Enter to continue"<<endl;
-								//
+								PressCToContinue();
 							}
 							break;
 							case recorder: {
@@ -145,8 +148,7 @@ int main () try
 								form.enter_data();
 								RecorderEKG recorder(form.channel_number_,form.serial_number_,form.sampling_,form.producer_,form.model_);
 								holter_ekg_form.new_recorder_ = recorder;
-								cout<<"Press Enter to continue"<<endl;
-								//cin>>i;
+								PressCToContinue();
 							}
 							break;
 							case signal: {
@@ -155,16 +157,32 @@ int main () try
 								form.enter_data();
 								Signal<int,int> signal(form.sample_, form.time_);
 								holter_ekg_form.signal_.push_back(signal);
-								cout<<"Press Enter to continue"<<endl;
-								//in.get();
+								PressCToContinue();
 							}
 							break;
 							case display: {
 								holter_ekg_form.show_date();
-								cout<<"Press Enter to continue"<<endl;
-								//cin>>i;
+								PressCToContinue();
 							}
 							break;
+							case save: {
+								cout<<"Write the file name:"<<endl;
+								cout<<"Enter here >";
+								cin>>str;
+								try{holter_ekg_form.write_date(str);}
+								catch (const OpenFileError &of_error){
+									Error_window win_err(of_error.get_error());
+									win_err.display_win();
+									break;
+								}
+								catch (const WriteFileError &w_error){
+									Error_window win_err(w_error.get_error());
+									win_err.display_win();
+									break;
+								}
+								cout<<endl;
+								cout<<"Date write complete"<<endl;
+							}
 							case exit_form: {
 								cout<<"Finish enter date? [T/N] >";
 								cin>>ch;
@@ -173,7 +191,6 @@ int main () try
 									form_exit = true;
 								else
 									form_exit = false;
-								break;
 							}
 							break;
 						}
@@ -182,15 +199,26 @@ int main () try
 
 				}
 					break;
-				case read_date:{
+				case read_date: {
 					HolterEKG holter_ekg_read;
 					cout<<"Write the file name:"<<endl;
 					cout<<"Enter here >";
 					cin>>str;
-					holter_ekg_read.read_date(str);
+					try {holter_ekg_read.read_date(str);}
+					catch (const OpenFileError &of_error){
+						Error_window win_err(of_error.get_error());
+						win_err.display_win();
+						break;
+					}
+					catch (const ReadFileError &r_error){
+						Error_window win_err(r_error.get_error());
+						win_err.display_win();
+						break;
+					}
 					cout<<endl;
 					cout<<"Date read complete"<<endl;
 					holter_ekg_global = holter_ekg_read;
+
 
 					cout<<"Display date? [T/N] >";
 					cin>>ch;
@@ -284,7 +312,19 @@ int main () try
 						cout<<"Write the file name:"<<endl;
 						cout<<"Enter here >";
 						cin>>str;
-						holter_abpm_example.write_date(str);
+
+						try{holter_abpm_example.write_date(str);}
+						catch (const OpenFileError &of_error){
+							Error_window win_err(of_error.get_error());
+							win_err.display_win();
+							break;
+						}
+						catch (const WriteFileError &w_error){
+							Error_window win_err(w_error.get_error());
+							win_err.display_win();
+							break;
+						}
+
 						cout<<endl;
 						cout<<"Date write complete"<<endl;
 					}
@@ -301,6 +341,7 @@ int main () try
 			case enter_date: {
 				HolterABPM holter_abpm_form;
 				Form_window form("ABPM");
+			do {
 				form.display_win();
 				cout<<endl;
 				cout<<"Enter here:";
@@ -314,24 +355,79 @@ int main () try
 				}
 				switch (i) {
 					case date: {
-
+						Date_form_window form;
+						form.display_win();
+						form.enter_data();
+						Date date(form.day_,form.month_,form.year_);
+						holter_abpm_form.test_date_ = date;
+						PressCToContinue();
 					}
 					break;
 					case patient: {
-
+						Patient_form_window form;
+						form.display_win();
+						form.enter_data();
+						Patient patient(form.age_, form.growth_, form.weight_, form.name_, form.last_name_, form.pesel_);
+						holter_abpm_form.patients_ = patient;
+						PressCToContinue();
 					}
 					break;
 					case recorder: {
-
+						Recorder_form_window form("ABPM");
+						form.display_win();
+						form.enter_data();
+						RecorderABPM recorder(form.unit_,form.serial_number_,form.sampling_,form.producer_,form.model_);
+						holter_abpm_form.new_recorder_ = recorder;
+						PressCToContinue();
 					}
 					break;
 					case signal: {
+						Signal_form_window form;
+						form.display_win();
+						form.enter_data();
+						Signal<int,int> signal(form.sample_, form.time_);
+						holter_abpm_form.signal_.push_back(signal);
+						PressCToContinue();
+					}
+					break;
+					case display: {
+						holter_abpm_form.show_date();
+						PressCToContinue();
+					}
+					break;
+					case save: {
+						cout<<"Write the file name:"<<endl;
+						cout<<"Enter here >";
+						cin>>str;
 
+						try{holter_abpm_form.write_date(str);}
+						catch (const OpenFileError &of_error){
+							Error_window win_err(of_error.get_error());
+							win_err.display_win();
+							break;
+						}
+						catch (const WriteFileError &w_error){
+							Error_window win_err(w_error.get_error());
+							win_err.display_win();
+							break;
+						}
+
+						cout<<endl;
+						cout<<"Date write complete"<<endl;
+					}
+					case exit_form: {
+						cout<<"Finish enter date? [T/N] >";
+						cin>>ch;
+						ch = toupper(ch);
+						if (ch == 'T')
+							form_exit = true;
+						else
+							form_exit = false;
 					}
 					break;
 				}
-
-
+				}
+				while(!form_exit);
 			}
 				break;
 			case read_date:{
@@ -339,7 +435,17 @@ int main () try
 				cout<<"Write the file name:"<<endl;
 				cout<<"Enter here >";
 				cin>>str;
-				holter_abpm_read.read_date(str);
+				try {holter_abpm_read.read_date(str);}
+				catch (const OpenFileError &of_error){
+					Error_window win_err(of_error.get_error());
+					win_err.display_win();
+					break;
+				}
+				catch (const ReadFileError &r_error){
+					Error_window win_err(r_error.get_error());
+					win_err.display_win();
+					break;
+				}
 				cout<<endl;
 				cout<<"Date read complete"<<endl;
 				holter_abpm_global = holter_abpm_read;
@@ -393,6 +499,16 @@ int main () try
 	close.display_win();
 
 	return 0;
+}
+
+catch (const WrongSizeError &wz_error){
+	Error_window win_err(wz_error.get_error());
+	win_err.display_win();
+}
+
+catch (const CalculationError &c_error){
+	Error_window win_err(c_error.get_error());
+	win_err.display_win();
 }
 
 catch (...){

@@ -3,12 +3,8 @@
 #ifndef SIGNAL_H_
 #define SIGNAL_H_
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <utility>
-#include <vector>
-#include <algorithm>
+#include "std_lib_facilities.h"
+
 #include "error.h"
 #include "app_service.h"
 

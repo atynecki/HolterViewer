@@ -117,7 +117,6 @@ public:
 	}
 };
 
-
 class Label {
 public:
 	pair<string, string> label_;
@@ -145,7 +144,6 @@ public:
 
 template <typename Elt1, typename Elt2>
 class Plot: public Space {
-public:
 	vector<Line> plot_lines_;
 	Axis_y <Elt1> axis_y_;
 	Axis_x <Elt2> axis_x_;
@@ -155,10 +153,14 @@ public:
 	vector<Elt2> x_values_;
 	char marker_;
 
-
+public:
 	Plot(): axis_x_(), axis_y_(), marker_(0){ }
 	Plot(vector<Elt1> y_values, Label y_label, vector<Elt2> x_values, Label x_label, char marker)
 		: marker_(marker), y_values_(y_values), x_values_(x_values), x_label_(x_label), y_label_(y_label){
+
+		if (y_values.size() != x_values.size())
+			throw WrongSizeError ("DIFFERENT SIZE OF SIGNAL ARGUMENT");
+
 		this->width_ = (x_values.size()*+1)*3+4;
 		Axis_x <Elt2> axisx(x_values);
 		axis_x_ = axisx;
@@ -190,7 +192,6 @@ public:
 					position_tab.push_back(position);
 					tail = position;
 				}
-
 			}
 
 			plot_lines_.push_back(Plot_line(width_, std::to_string(value), axis_y_.marker_, position_tab, marker_));
@@ -222,6 +223,7 @@ public:
 		}
 	}
 };
+
 }
 
 #endif /* PLOT_H_ */
