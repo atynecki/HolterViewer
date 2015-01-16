@@ -54,7 +54,7 @@ ostream & operator<<(std::ostream & os, const RecorderEKG & recorder){
 
 /** virtual method for write date to file */
 void RecorderEKG::write_date(ofstream& file) {
-	file<<producer_<<","<<model_<<","<<serial_number_<<","<<sampling_<<","<<channel_number_<<endl;
+	file<<producer_<<","<<model_<<","<<serial_number_<<","<<sampling_<<","<<channel_number_<<","<<endl;
 	if(!file)
 		throw WriteFileError ("WRITE ERROR");
 }
@@ -118,7 +118,7 @@ ostream & operator<<(std::ostream & os, const RecorderABPM & recorder){
 
 /** virtual method for write date to file */
 void RecorderABPM::write_date(ofstream& file) {
-	file<<producer_<<","<<model_<<","<<serial_number_<<","<<sampling_<<","<<unit_<<endl;
+	file<<producer_<<","<<model_<<","<<serial_number_<<","<<sampling_<<","<<unit_<<","<<endl;
 	if(!file)
 		throw WriteFileError ("WRITE ERROR");
 }

@@ -29,7 +29,7 @@ string find_word(string line, int word_number);
 
 void PressCToContinue();
 
-template<class T>
-string to_string(const T& t);
+bool IsDouble (const string &str);
+double ConvertToDouble (const string &str);
 
 #endif /* APP_SERVICE_H_ */

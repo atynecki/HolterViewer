@@ -48,14 +48,15 @@ bool Date::operator<(Date &date){
 
 /** friend method for operator "<<" */
 ostream & operator<<(std::ostream & os, const Date & date){
-
 	os << date.date_[0]<<"."<<date.date_[1]<<"."<<date.date_[2]<<endl;
 	return os;
 }
 
 /** virtual method for write date to file */
 void Date::write_date(ofstream& file) {
-	file<<date_[0]<<","<<date_[1]<<","<<date_[2]<<endl;
+	for(auto n: date_)
+		file<<n<<",";
+	file<<endl;
 	if(!file)
 		throw WriteFileError ("WRITE ERROR");
 

@@ -60,15 +60,16 @@ int main () try
 					Patient patient(46, 182, 102, "Jan", "Kowalski", "74023086385");
 					patient.set_id_number();
 					Date date(2014,1,16);
-					vector <int> sample = {1,4,7,9,14,17,11,9};
-					vector <int> time = {1,2,3,4,5,6,7,8};
-					Signal<int, int> signal(sample, time);
+					vector <EKG_SIGNAL_TYPE> sample = {1,4,7,9,14,17,11,9,2,3,6,11,15,5,1};
+					vector <TIME_TYPE> time = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+					Signal<EKG_SIGNAL_TYPE, TIME_TYPE> signal(sample, time);
 					HolterEKG holter_ekg_example(date, patient, &signal, recorder, 1);
 					holter_ekg_global = holter_ekg_example;
 					holter_ekg_example.show_date();
 					cout<<endl;
-					Plot_window <int, int> plot_example("Holter EKG example plot", sample, "V", time, "s");
+					Plot_window <EKG_SIGNAL_TYPE, TIME_TYPE> plot_example("Holter EKG example plot", sample, "V", time, "s");
 					plot_example.display_win();
+					display_min_max(signal);
 					cout<<"Write date to file? [T/N] >";
 					cin>>ch;
 					ch = toupper(ch);
@@ -138,6 +139,7 @@ int main () try
 								form.display_win();
 								form.enter_data();
 								Patient patient(form.age_, form.growth_, form.weight_, form.name_, form.last_name_, form.pesel_);
+								patient.set_id_number();
 								holter_ekg_form.patients_ = patient;
 								PressCToContinue();
 							}
@@ -152,11 +154,12 @@ int main () try
 							}
 							break;
 							case signal: {
-								Signal_form_window form;
+								Signal_form_window  <EKG_SIGNAL_TYPE> form;
 								form.display_win();
 								form.enter_data();
-								Signal<int,int> signal(form.sample_, form.time_);
+								Signal<EKG_SIGNAL_TYPE,TIME_TYPE> signal(form.sample_, form.time_);
 								holter_ekg_form.signal_.push_back(signal);
+								holter_ekg_form.set_signal_num(1);
 								PressCToContinue();
 							}
 							break;
@@ -182,7 +185,9 @@ int main () try
 								}
 								cout<<endl;
 								cout<<"Date write complete"<<endl;
+								PressCToContinue();
 							}
+							break;
 							case exit_form: {
 								cout<<"Finish enter date? [T/N] >";
 								cin>>ch;
@@ -233,12 +238,12 @@ int main () try
 					if (ch == 'T'){
 						holter_ekg_read.show_date();
 						cout<<endl;
-						vector<int> sample;
-						vector<int> time;
+						vector<EKG_SIGNAL_TYPE> sample;
+						vector<TIME_TYPE> time;
 						for(counter =0; counter<holter_ekg_read.get_signal_num(); ++counter){
 							sample = get_value_signal(holter_ekg_read.signal_[counter].signal_);
 							time = get_time_signal(holter_ekg_read.signal_[counter].signal_);
-							Plot_window <int, int> plot_example("Holter EKG read plot", sample, "V", time, "s");
+							Plot_window <EKG_SIGNAL_TYPE, TIME_TYPE> plot_example("Holter EKG read plot", sample, "V", time, "s");
 							plot_example.display_win();
 						}
 					}
@@ -285,19 +290,20 @@ int main () try
 
 			switch (i) {
 				case example:{
-					RecorderABPM recorder("mmHg", 1003, 0.1, "Medi_tech", "ABPM-05");
+					RecorderABPM recorder("mmHg", 1003, 25, "Medi_tech", "ABPM-05");
 					Patient patient(46, 182, 102, "Jan", "Kowalski", "74023086385");
 					patient.set_id_number();
 					Date date(2014,1,16);
-					vector <int> sample = {12,14,20,4,7,17,11,2};
-					vector <int> time = {1,2,3,4,5,6,7,8};
-					Signal<int, int> signal(sample, time);
+					vector <ABPM_SIGNAL_TYPE> sample = {0.12,0.14,0.2,0.4,0.7,0.17,0.11,0.2,0.4,0.85,0.1,0.7,0.3,0.1,0.5};
+					vector <TIME_TYPE> time = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+					Signal<ABPM_SIGNAL_TYPE, TIME_TYPE> signal(sample, time);
 					HolterABPM holter_abpm_example(date, patient, signal, recorder, "normal");
 					holter_abpm_global = holter_abpm_example;
 					holter_abpm_example.show_date();
 					cout<<endl;
-					Plot_window <int, int> plot_example("Holter ABPM example plot", sample, "V", time, "s");
+					Plot_window <ABPM_SIGNAL_TYPE, TIME_TYPE> plot_example("Holter ABPM example plot", sample, "V", time, "s");
 					plot_example.display_win();
+					display_min_max(signal);
 					cout<<"Write date to file? [T/N] >";
 					cin>>ch;
 					ch = toupper(ch);
@@ -344,9 +350,9 @@ int main () try
 			do {
 				form.display_win();
 				cout<<endl;
-				cout<<"Enter here:";
+				cout<<"Enter here >";
 				cin>>i;
-				while ((i != 1) & (i != 2) & (i != 3) & (i != 4)){
+				while ((i != 1) & (i != 2) & (i != 3) & (i != 4) & (i != 5) & (i != 6) & (i != 7)){
 					cin.clear();
 					cin.ignore(numeric_limits<int>::max(), '\n');
 					cout<<"Wrong date! Try again"<<endl;
@@ -368,6 +374,7 @@ int main () try
 						form.display_win();
 						form.enter_data();
 						Patient patient(form.age_, form.growth_, form.weight_, form.name_, form.last_name_, form.pesel_);
+						patient.set_id_number();
 						holter_abpm_form.patients_ = patient;
 						PressCToContinue();
 					}
@@ -382,10 +389,10 @@ int main () try
 					}
 					break;
 					case signal: {
-						Signal_form_window form;
+						Signal_form_window <ABPM_SIGNAL_TYPE> form;
 						form.display_win();
 						form.enter_data();
-						Signal<int,int> signal(form.sample_, form.time_);
+						Signal<ABPM_SIGNAL_TYPE,TIME_TYPE> signal(form.sample_, form.time_);
 						holter_abpm_form.signal_.push_back(signal);
 						PressCToContinue();
 					}
@@ -414,7 +421,9 @@ int main () try
 
 						cout<<endl;
 						cout<<"Date write complete"<<endl;
+						PressCToContinue();
 					}
+					break;
 					case exit_form: {
 						cout<<"Finish enter date? [T/N] >";
 						cin>>ch;
@@ -463,11 +472,11 @@ int main () try
 				if (ch == 'T'){
 					holter_abpm_read.show_date();
 					cout<<endl;
-					vector<int> sample;
-					vector<int> time;
+					vector<ABPM_SIGNAL_TYPE> sample;
+					vector<TIME_TYPE> time;
 					sample = get_value_signal(holter_abpm_read.signal_[0].signal_);
 					time = get_time_signal(holter_abpm_read.signal_[0].signal_);
-					Plot_window <int, int> plot_example("Holter ABPM read plot", sample, holter_abpm_read.new_recorder_.get_unit(), time, "s");
+					Plot_window <ABPM_SIGNAL_TYPE, TIME_TYPE> plot_example("Holter ABPM read plot", sample, holter_abpm_read.new_recorder_.get_unit(), time, "s");
 					plot_example.display_win();
 				}
 

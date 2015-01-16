@@ -6,6 +6,7 @@
 
 #include "std_lib_facilities.h"
 #include "app_service.h"
+
 #include "Frame.h"
 #include "Plot.h"
 
@@ -161,10 +162,10 @@ class Form_window: public Window {
 protected:
 	string holter_type_;
 
-	Form_window();
 	Form_window(const Close_window& f_win) { }
 	Form_window & operator=( const Close_window& f_win){ }
 public:
+	Form_window();
 	Form_window(string type) {
 		holter_type_ = type;
 
@@ -252,8 +253,8 @@ public:
 		text_message.push_back("Last name");
 		text_message.push_back("Pesel");
 		text_message.push_back("Age");
-		text_message.push_back("Growth [kg]");
-		text_message.push_back("Weight [cm]");
+		text_message.push_back("Growth [cm]");
+		text_message.push_back("Weight [kg]");
 		Text_box close_frame(50, start_point_, '_', text_message);
 		frames_.push_back(close_frame);
 	}
@@ -284,7 +285,7 @@ public:
 class Recorder_form_window: public Window {
 protected:
 	string holter_type_;
-	Recorder_form_window();
+
 	Recorder_form_window(const  Recorder_form_window& win) { }
 	Recorder_form_window & operator=( const  Recorder_form_window& win){ }
 public:
@@ -293,8 +294,9 @@ public:
 	int serial_number_ = 0;
 	double sampling_ = 0;
 	int channel_number_ = 0;
-	string unit_ = 0;
+	string unit_;
 
+	Recorder_form_window();
 	Recorder_form_window(string type) {
 		holter_type_ = type;
 		start_point_ = Point (20,0, ' ');
@@ -341,16 +343,17 @@ public:
 	}
 };
 
+template <typename T>
 class Signal_form_window: public Window {
 protected:
 	string sample_str;
 	string time_str;
-	int samples_number = 0;
+	int samples_number = 1;
 	Signal_form_window(const  Signal_form_window& win) { }
 	Signal_form_window & operator=( const  Signal_form_window& win){ }
 public:
-	vector<int> sample_;
-	vector<int> time_;
+	vector<T> sample_;
+	vector<TIME_TYPE> time_;
 
 	Signal_form_window() {
 		start_point_ = Point (20,0, ' ');
@@ -372,19 +375,42 @@ public:
 	}
 
 	void enter_data (){
-		cout<<"Enter here >";
-		cin>>samples_number;
-		cout<<"Enter here >";
-		cin>>sample_str;
-		cout<<"Enter here >";
-		cin>>time_str;
-		while((sample_str.size() != time_str.size()) | (sample_str.size() !=samples_number)){
-			cout<<"Various sizes of samples vectors!"<<endl;
-			cout<<"Vectors should vectors should contain "<<samples_number<<" samples. Try again"<<endl;
-		}
-		for(unsigned i = 0; i<samples_number; ++i){
-			sample_[i] = atoi(find_word(sample_str, i).c_str());
-			time_[i] = atoi(find_word(time_str, i).c_str());;
+
+		while(sample_.size() !=samples_number){
+			cout<<"Enter here >";
+			cin>>samples_number;
+			cout<<"Enter here >";
+			cin>>sample_str;
+			sample_str.push_back(',');
+			cout<<"Enter here >";
+			cin>>time_str;
+			time_str.push_back(',');
+
+			string sample_word;
+			string time_word;
+			for(unsigned i = 0; i<samples_number; ++i){
+				sample_word = find_word(sample_str, i+1);
+				time_word = find_word(time_str, i+1);
+				if((sample_word != "NOT WORD") | (time_word != "NOT WORD")){
+					if(IsDouble(sample_word)){
+						//sample_.push_back(stod(sample_word));
+						//time_.push_back(stod(time_word));
+						sample_.push_back(ConvertToDouble(sample_word));
+						time_.push_back(ConvertToDouble(time_word));
+					}
+					else {
+						//sample_.push_back(stoi(sample_word));
+						//time_.push_back(stoi(time_word));
+						sample_.push_back(atoi(sample_word.c_str()));
+						time_.push_back(atoi(time_word.c_str()));
+					}
+				}
+				else {
+					cout<<"Various sizes of samples vectors!"<<endl;
+					cout<<"Vectors should vectors should contain "<<samples_number<<" samples. Try again"<<endl;
+					break;
+				}
+			}
 		}
 		cout<<"Thank you"<<endl;
 	}
@@ -402,7 +428,6 @@ public:
 
 	text_message.push_back("Exception occurred!");
 	text_message.push_back(error_massage);
-	text_message.push_back("Program shuts down");
 	Text_box error_frame(100, start_point_, '!', text_message);
 	frames_.push_back(error_frame);
 	}

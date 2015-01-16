@@ -160,9 +160,8 @@ public:
 	int calculate_width (vector<string> text){
 		vector<int> size_of_text;
 		int result;
-		for (unsigned i=0; i<text.size(); ++i){
-			size_of_text.push_back(text[i].size());
-		}
+		for(auto n: text)
+			size_of_text.push_back(n.size());
 		result = (int) (*max_element(size_of_text.begin(),size_of_text.end()));
 
 		return result;

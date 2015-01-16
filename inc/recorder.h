@@ -11,13 +11,16 @@
 using namespace std;
 
 class Recorder {
-public:
+protected:
 	string producer_;
 	string model_;
 	int serial_number_;
 	double sampling_;
 
 	Recorder();
+	Recorder(const Recorder & recorder);
+	Recorder & operator=(const Recorder &recorder);
+public:
 	Recorder(string producer, string model, int serial_num, double samp);
 
 	virtual ~Recorder() { }

@@ -14,6 +14,8 @@ string find_word(string line, int word_number)
 	for(int i = 0; i<word_number; ++i)
 	{
 		pos_tail = line.find(",", pos_head);
+		if(pos_tail == string::npos)
+			return "NOT WORD";
 		length = pos_tail - pos_head;
 		temp = line.substr(pos_head, length);
 		pos_head = pos_tail+1;
@@ -35,9 +37,22 @@ void PressCToContinue()
 	}
  }
 
-template<class T> string to_string(const T& t)
+bool IsDouble (const string &str)
 {
-	ostringstream os;
-	os << t;
-	return os.str();
+	size_t position;
+	position = str.find(".", 0);
+	if(position == string::npos)
+		return false;
+	else
+		return true;
+
+}
+
+double ConvertToDouble (const string &str)
+{
+	istringstream i(str);
+	double value;
+	i>>value;
+
+	return value;
 }

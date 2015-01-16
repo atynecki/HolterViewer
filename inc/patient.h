@@ -11,11 +11,15 @@
 using namespace std;
 
 class Person {
-public:
+protected:
 	string name_;
 	string last_name_;
 	string pesel_;
-	Person();
+
+	Person() { };
+	Person (const Person &person);
+	Person & operator=(const Person &person);
+public:
 	Person(string name, string last_name, string pesel);
 	virtual ~Person(){}
 

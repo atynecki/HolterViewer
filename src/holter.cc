@@ -1,14 +1,6 @@
-/*
- * rower.cc
- *
- *  Created on: 24 paź 2014
- *      Author: tynio
- */
 
 /** Head class HOLTER source file*/
 
-#include <iostream>
-#include <string>
 #include "holter.h"
 
 using namespace std;
@@ -18,10 +10,9 @@ using namespace std;
 Holter::Holter(){ }
 
 /** arguments (all) constructor */
-Holter::Holter(const Date &date, const Patient &patient,const Signal<int, int> &signal){
+Holter::Holter(const Date &date, const Patient &patient){
 	test_date_ = date;
 	patients_= patient;
-	signal_.push_back(signal);
 }
 
 /** destructor */
@@ -32,7 +23,7 @@ Holter::~Holter(){ }
 HolterEKG::HolterEKG(): Holter (), signal_number_(0){ }
 
 /** arguments (all) constructor */
-HolterEKG::HolterEKG(const Date &date, const Patient &patient,const Signal<int, int>* signal, const RecorderEKG recorder, int signal_num){
+HolterEKG::HolterEKG(const Date &date, const Patient &patient,const Signal<EKG_SIGNAL_TYPE, TIME_TYPE>* signal, const RecorderEKG recorder, int signal_num){
 
 	signal_number_ = signal_num;
 	new_recorder_ = recorder;
@@ -87,9 +78,11 @@ void HolterEKG::show_date() {
 
 	cout<<"Signal number: "<<signal_number_<<endl;
 
-	for (unsigned i=0; i<signal_number_; i++){
-		cout<<"Signal "<< i+1<<endl;
-		signal_[i].show_date();
+	if(signal_.empty()==0){
+		for (unsigned i=0; i<signal_number_; i++){
+			cout<<"Signal "<< i+1<<endl;
+			signal_[i].show_date();
+		}
 	}
 }
 
@@ -101,7 +94,7 @@ void HolterEKG::write_date(string file_name) {
 
 	plikWyj<< "HOLTER_EKG_DATE"<<endl;
 	if(!plikWyj)
-			throw WriteFileError ("WRITE ERROR");
+		throw WriteFileError ("WRITE ERROR");
 
 	plikWyj<< "Signal_number: " <<signal_number_<<endl;
 	if(!plikWyj)
@@ -121,12 +114,12 @@ void HolterEKG::write_date(string file_name) {
 /** virtual method for read date from file */
 void HolterEKG::read_date(string file_name) {
 	string tmp;
-	pair<int,int> signal_end(0,0);
-	Signal<int, int> signal_tab;
-	Signal<int ,int> signal_result;
-	vector<pair<int,int>> signal_tmp;
-	vector<pair<int, int>>::iterator head;
-	vector<pair<int, int>>::iterator tail;
+	pair<EKG_SIGNAL_TYPE,TIME_TYPE> signal_end(0,0);
+	Signal<EKG_SIGNAL_TYPE, TIME_TYPE> signal_tab;
+	Signal<EKG_SIGNAL_TYPE ,TIME_TYPE> signal_result;
+	vector<pair<EKG_SIGNAL_TYPE,TIME_TYPE>> signal_tmp;
+	vector<pair<EKG_SIGNAL_TYPE, TIME_TYPE>>::iterator head;
+	vector<pair<EKG_SIGNAL_TYPE, TIME_TYPE>>::iterator tail;
 
 	ifstream plikWej (file_name) ;
 	if(!plikWej)
@@ -139,9 +132,6 @@ void HolterEKG::read_date(string file_name) {
 
 	signal_number_= atoi(tmp.substr(14).c_str());
 
-	if(!plikWej)
-		throw ReadFileError ("READ ERROR");
-
 	new_recorder_.read_date(plikWej);
 	patients_.read_date(plikWej);
 	test_date_.read_date(plikWej);
@@ -153,7 +143,7 @@ void HolterEKG::read_date(string file_name) {
 		tail = find(head, tail, signal_end);
 		signal_tmp = signal_tab.signal_;
 		signal_tmp.assign(head, tail);
-		Signal<int ,int> signal_result(signal_tmp);
+		Signal<EKG_SIGNAL_TYPE ,TIME_TYPE> signal_result(signal_tmp);
 		signal_.push_back(signal_result);
 		head = ++tail;
 	}
@@ -166,7 +156,7 @@ void HolterEKG::read_date(string file_name) {
 HolterABPM::HolterABPM(): Holter () { }
 
 /** arguments (all) constructor */
-HolterABPM::HolterABPM(const Date &date, const Patient &patient, const Signal<int, int> &signal, const RecorderABPM recorder, string mode) {
+HolterABPM::HolterABPM(const Date &date, const Patient &patient, const Signal<ABPM_SIGNAL_TYPE, TIME_TYPE> &signal, const RecorderABPM recorder, string mode) {
 
 	mode_ = mode;
 	new_recorder_ = recorder;
@@ -219,7 +209,8 @@ void HolterABPM::show_date() {
 	cout<<"Test date:"<<endl;
 	cout<<test_date_;
 
-	signal_[0].show_date();
+	if(signal_.empty()==0)
+		signal_.front().show_date();
 }
 
 /** virtual method for write date to file */
@@ -263,7 +254,7 @@ void HolterABPM::read_date(string file_name) {
 	test_date_.read_date(plikWej);
 
 	if(signal_.empty()){
-		Signal<int, int> signal_tmp;
+		Signal<ABPM_SIGNAL_TYPE, TIME_TYPE> signal_tmp;
 		signal_.push_back(signal_tmp);
 	}
 

@@ -1,3 +1,4 @@
+
 /** Subobject Signal implementation file */
 
 #include "ecg_signal.h"
@@ -9,7 +10,6 @@ template<typename Elt1, typename Elt2>
 Signal<Elt1, Elt2>::Signal(vector<pair<Elt1,Elt2>> sig) {
 	signal_ = sig;
 }
-
 
 /** arguments (all) constructor 2*/
 template<typename Elt1, typename Elt2>
@@ -26,19 +26,12 @@ Signal<Elt1, Elt2>::Signal(vector<Elt1> sample, vector<Elt2> time) {
 	}
 }
 
-/** Auxiliary function 1 */
-template<typename Elt1, typename Elt2>
-void Signal<Elt1, Elt2>::fun_1(pair<Elt1, Elt2> el) {
-	signal_.push_back(el);
-}
-
 /** copy constructor */
 template<typename Elt1, typename Elt2>
 Signal<Elt1, Elt2>::Signal(const Signal &sig) {
 
-	//for_each(sig.signal_.begin(), sig.signal_.end(), fun_1);
-	for(unsigned i = 0; i <sig.signal_.size(); ++i)
-		fun_1(sig.signal_[i]);
+	for(auto n: sig.signal_)
+		signal_.push_back(n);
 }
 
 /** operator "=" */
@@ -46,9 +39,8 @@ template<typename Elt1, typename Elt2>
 Signal<Elt1, Elt2> & Signal<Elt1, Elt2>::operator=(const Signal &sig) {
 
 	if (this != &sig) {
-		//for_each(sig.signal_.begin(), sig.signal_.end(), fun_1);
-		for(unsigned i = 0; i <sig.signal_.size(); ++i)
-			fun_1(sig.signal_[i]);
+		for(auto n: sig.signal_)
+			signal_.push_back(n);
 	}
 	return *this;
 }
@@ -60,17 +52,15 @@ Signal<Elt1, Elt2> Signal<Elt1, Elt2>::operator+(const Signal& sig) const {
 	Signal tmp;
 	tmp = *this;
 
-	for(unsigned i = 0; i <sig.signal_.size(); ++i) {
-		tmp.signal_.push_back(sig.signal_[i]);
-	}
+	for(auto n: sig.signal_)
+		tmp.signal_.push_back(n);
 
 	return tmp;
 }
 
 /** operator "( )" */
 template<typename Elt1, typename Elt2>
-Signal<Elt1, Elt2> Signal<Elt1, Elt2>::operator()(Elt1 sample,
-		Elt2 time) const {
+Signal<Elt1, Elt2> Signal<Elt1, Elt2>::operator()(Elt1 sample, Elt2 time) const {
 
 	pair<Elt1, Elt2> sample_signal;
 	sample_signal.first = sample;
@@ -94,16 +84,15 @@ void display_pair(pair<Elt1, Elt2> el) {
 template<typename Elt1, typename Elt2>
 void Signal<Elt1,Elt2>::show_date(){
 	cout << "Signal sample: " << endl;
-	for (unsigned i = 0; i <signal_.size(); ++i) {
-		display_pair(signal_[i]);
-	}
+	for(auto n: signal_)
+		display_pair(n);
 }
 
 /** method for write date to file */
 template<typename Elt1, typename Elt2>
 void Signal<Elt1, Elt2>::write_date(ofstream& file) {
-	for (unsigned i = 0; i <signal_.size(); ++i) {
-		file << signal_[i].first << "," << signal_[i].second << endl;
+	for(auto n: signal_) {
+		file << n.first << "," << n.second << ","<< endl;
 		if (!file)
 			throw WriteFileError("WRITE ERROR");
 	}
@@ -116,11 +105,22 @@ void Signal<Elt1, Elt2>::read_date(ifstream& file) {
 	pair<Elt1, Elt2> sample_signal;
 
 	while (file.eof() != 1) {
-		getline(file, read_temp);
 		if (!file)
 			throw ReadFileError("READ ERROR");
-		sample_signal.first = atoi(find_word(read_temp, 1).c_str());
-		sample_signal.second = atoi(find_word(read_temp, 2).c_str());
+		getline(file, read_temp);
+		if(IsDouble(read_temp)){
+			//sample_signal.first = stod(find_word(read_temp, 1));
+			//sample_signal.second = stod(find_word(read_temp, 2));
+			sample_signal.first = ConvertToDouble(find_word(read_temp, 1));
+			sample_signal.second = ConvertToDouble(find_word(read_temp, 2));
+		}
+		else {
+			//sample_signal.first = stoi(find_word(read_temp, 1));
+			//sample_signal.second = stoi(find_word(read_temp, 2));
+			sample_signal.first = atoi(find_word(read_temp, 1).c_str());
+			sample_signal.second = atoi(find_word(read_temp, 2).c_str());
+		}
+
 		signal_.push_back(sample_signal);
 	}
 
@@ -131,8 +131,8 @@ void Signal<Elt1, Elt2>::read_date(ifstream& file) {
 template <typename Elt1, typename Elt2>
 vector<Elt1> get_value_signal(const vector<pair<Elt1, Elt2>> sig){
 	vector<Elt1> result;
-	for (unsigned i = 0; i <sig.size(); ++i)
-		result.push_back(get<0>(sig[i]));
+	for(auto n: sig)
+		result.push_back(get<0>(n));
 
 	return result;
 }
@@ -141,8 +141,8 @@ vector<Elt1> get_value_signal(const vector<pair<Elt1, Elt2>> sig){
 template <typename Elt1, typename Elt2>
 vector<Elt2> get_time_signal(const vector<pair<Elt1, Elt2>> sig){
 	vector<Elt2> result;
-	for (unsigned i = 0; i <sig.size(); ++i)
-		result.push_back(get<1>(sig[i]));
+	for(auto n: sig)
+		result.push_back(get<1>(n));
 
 	return result;
 }
@@ -154,7 +154,7 @@ pair<Elt1, Elt2> find_max(const Signal<Elt1,Elt2>& sig){
 	pair<Elt1, Elt2> result;
 	int position;
 
-	signal_samples = parse_signal(sig.signal_);
+	signal_samples = get_value_signal(sig.signal_);
 
 	position = (int)(max_element(signal_samples.begin(), signal_samples.end()) - signal_samples.begin());
 
@@ -162,6 +162,7 @@ pair<Elt1, Elt2> find_max(const Signal<Elt1,Elt2>& sig){
 
 	return result;
 }
+
 /** method for find min value in signal*/
 template<typename Elt1, typename Elt2>
 pair<Elt1, Elt2> find_min(const Signal<Elt1,Elt2>& sig){
@@ -169,7 +170,7 @@ pair<Elt1, Elt2> find_min(const Signal<Elt1,Elt2>& sig){
 	pair<Elt1, Elt2> result;
 	int position;
 
-	signal_samples = parse_signal(sig.signal_);
+	signal_samples = get_value_signal(sig.signal_);
 
 	position = (int)(min_element(signal_samples.begin(), signal_samples.end()) - signal_samples.begin());
 
@@ -177,6 +178,7 @@ pair<Elt1, Elt2> find_min(const Signal<Elt1,Elt2>& sig){
 
 	return result;
 }
+
 /** method for calculate frequance in signal*/
 template<typename Elt1, typename Elt2>
 float calculate_frequance(const Signal<Elt1,Elt2>& sig, int sampling){
@@ -198,4 +200,16 @@ float calculate_frequance(const Signal<Elt1,Elt2>& sig, int sampling){
 	result = (float)(1)/(float)length;
 
 	return result;
+}
+
+template <typename Elt1, typename Elt2>
+void display_min_max (const Signal<Elt1, Elt2>& sig){
+	pair<Elt1, Elt2> max_value;
+	pair<Elt1, Elt2> min_value;
+
+	max_value = find_max(sig);
+	cout<<"Max value: " << max_value.first <<" in: " <<max_value.second<< "s"<<endl;
+
+	min_value = find_min(sig);
+	cout<<"Min value: " << min_value.first <<" in: " <<min_value.second<< "s"<<endl;
 }

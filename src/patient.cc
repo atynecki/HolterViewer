@@ -3,9 +3,6 @@
 
 #include "patient.h"
 
-/** no arguments constructor */
-Person::Person(){ }
-
 /** arguments constructor */
 Person::Person(string name, string last_name, string pesel): name_(name), last_name_(last_name), pesel_(pesel){ }
 
@@ -65,7 +62,7 @@ int Patient::set_id_number(){
 
 /** virtual method for write date to file */
 void Patient::write_date(ofstream& file) {
-	file<<name_<<","<<last_name_<<","<<pesel_<<","<<age_<<","<<growth_<<","<<weight_<<","<<id_number_<<endl;
+	file<<name_<<","<<last_name_<<","<<pesel_<<","<<age_<<","<<growth_<<","<<weight_<<","<<id_number_<<","<<endl;
 	if(!file)
 		throw WriteFileError ("WRITE ERROR");
 }

@@ -23,8 +23,6 @@ public:
 	Signal operator+(const Signal& sig) const;
 	Signal operator()(Elt1 sample, Elt2 time) const;
 
-	void fun_1(pair<Elt1, Elt2> el);
-
 	void show_date();
 	void write_date(ofstream& file);
 	void read_date(ifstream& file);
@@ -47,6 +45,9 @@ pair<Elt1, Elt2> find_min(const Signal<Elt1,Elt2>& sig);
 
 template <typename Elt1, typename Elt2>
 float calculate_frequance(const Signal<Elt1,Elt2>& sig, int sampling);
+
+template <typename Elt1, typename Elt2>
+void display_min_max (const Signal<Elt1,Elt2>& sig);
 
 #include "ecg_signal_impl.h"
 

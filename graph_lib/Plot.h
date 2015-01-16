@@ -80,9 +80,8 @@ public:
 		}
 		cout<<endl;
 
-		for(unsigned i = 0; i<(this->lenght_); ++i){
-			cout<<this->axis_[i]<<" ";
-		}
+		for(auto n:this->axis_)
+			cout<<n<<" ";
 	}
 };
 
@@ -111,9 +110,8 @@ public:
 	virtual ~Axis_y() { }
 
 	virtual void display(){
-		for(unsigned i = 0; i<(this->lenght_); ++i){
-			cout<<this->axis_[i]<<" "<<marker_<<endl;
-		}
+		for(auto n: this->axis_)
+			cout<<n<<" "<<marker_<<endl;
 	}
 };
 
@@ -194,7 +192,11 @@ public:
 				}
 			}
 
-			plot_lines_.push_back(Plot_line(width_, std::to_string(value), axis_y_.marker_, position_tab, marker_));
+			string value_str;
+			value_str = to_string(value);
+			if (value_str.size()>4)
+				value_str.erase(value_str.begin()+4, value_str.end());
+			plot_lines_.push_back(Plot_line(width_, value_str, axis_y_.marker_, position_tab, marker_));
 			position_tab.clear();
 		}
 
@@ -217,8 +219,8 @@ public:
 	}
 
 	void display_plot(){
-		for(unsigned i = 0; i<height_; ++i){
-			plot_lines_[i].draw();
+		for(auto n:plot_lines_){
+			n.draw();
 			cout<<endl;
 		}
 	}
