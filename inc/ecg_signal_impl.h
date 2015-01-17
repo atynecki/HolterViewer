@@ -3,8 +3,6 @@
 
 #include "ecg_signal.h"
 
-using namespace std;
-
 /** arguments (all) constructor 1*/
 template<typename Elt1, typename Elt2>
 Signal<Elt1, Elt2>::Signal(vector<pair<Elt1,Elt2>> sig) {
@@ -109,16 +107,13 @@ void Signal<Elt1, Elt2>::read_date(ifstream& file) {
 			throw ReadFileError("READ ERROR");
 		getline(file, read_temp);
 		if(IsDouble(read_temp)){
-			//sample_signal.first = stod(find_word(read_temp, 1));
-			//sample_signal.second = stod(find_word(read_temp, 2));
-			sample_signal.first = ConvertToDouble(find_word(read_temp, 1));
-			sample_signal.second = ConvertToDouble(find_word(read_temp, 2));
+			sample_signal.first = stod(find_word(read_temp, 1));
+			sample_signal.second = stod(find_word(read_temp, 2));
+
 		}
 		else {
-			//sample_signal.first = stoi(find_word(read_temp, 1));
-			//sample_signal.second = stoi(find_word(read_temp, 2));
-			sample_signal.first = atoi(find_word(read_temp, 1).c_str());
-			sample_signal.second = atoi(find_word(read_temp, 2).c_str());
+			sample_signal.first = stoi(find_word(read_temp, 1));
+			sample_signal.second = stoi(find_word(read_temp, 2));
 		}
 
 		signal_.push_back(sample_signal);

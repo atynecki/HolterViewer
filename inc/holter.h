@@ -15,7 +15,6 @@ typedef int EKG_SIGNAL_TYPE;
 typedef double ABPM_SIGNAL_TYPE;
 typedef int TIME_TYPE;
 
-
 using namespace std;
 
 class Holter {

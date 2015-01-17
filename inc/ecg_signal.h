@@ -4,8 +4,6 @@
 #define SIGNAL_H_
 
 #include "std_lib_facilities.h"
-
-#include "error.h"
 #include "app_service.h"
 
 using namespace std;

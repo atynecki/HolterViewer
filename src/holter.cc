@@ -3,8 +3,6 @@
 
 #include "holter.h"
 
-using namespace std;
-
 /** HOLTER CLASS */
 /** no arguments constructor */
 Holter::Holter(){ }
@@ -130,7 +128,7 @@ void HolterEKG::read_date(string file_name) {
 	if(!plikWej)
 		throw ReadFileError ("READ ERROR");
 
-	signal_number_= atoi(tmp.substr(14).c_str());
+	signal_number_= stoi(tmp.substr(14));
 
 	new_recorder_.read_date(plikWej);
 	patients_.read_date(plikWej);

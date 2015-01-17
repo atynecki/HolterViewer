@@ -68,9 +68,9 @@ void RecorderEKG::read_date(ifstream& file) {
 
 	producer_ = find_word(read_temp, 1);
 	model_ = find_word(read_temp, 2);
-	serial_number_ = atoi(find_word(read_temp, 3).c_str());
-	sampling_ = atoi(find_word(read_temp, 4).c_str());
-	channel_number_ = atoi(find_word(read_temp, 5).c_str());
+	serial_number_ = stoi(find_word(read_temp, 3));
+	sampling_ = stoi(find_word(read_temp, 4));
+	channel_number_ = stoi(find_word(read_temp, 5));
 }
 
 /** no arguments constructor */

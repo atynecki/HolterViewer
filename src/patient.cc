@@ -77,8 +77,8 @@ void Patient::read_date(ifstream& file) {
 	name_ = find_word(read_temp, 1);
 	last_name_ = find_word(read_temp, 2);
 	pesel_ = find_word(read_temp, 3);
-	age_ = atoi(find_word(read_temp, 4).c_str());
-	growth_ = atoi(find_word(read_temp, 5).c_str());
-	weight_ = atoi(find_word(read_temp, 6).c_str());
-	id_number_ = atoi(find_word(read_temp, 7).c_str());
+	age_ = stoi(find_word(read_temp, 4));
+	growth_ = stoi(find_word(read_temp, 5));
+	weight_ = stoi(find_word(read_temp, 6));
+	id_number_ = stoi(find_word(read_temp, 7));
 }

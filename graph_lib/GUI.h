@@ -10,6 +10,8 @@
 #include "Frame.h"
 #include "Plot.h"
 
+using namespace std;
+
 namespace Graph_lib {
 
 class Window {
@@ -165,7 +167,7 @@ protected:
 	Form_window(const Close_window& f_win) { }
 	Form_window & operator=( const Close_window& f_win){ }
 public:
-	Form_window();
+	Form_window(): Window() { }
 	Form_window(string type) {
 		holter_type_ = type;
 
@@ -343,17 +345,19 @@ public:
 	}
 };
 
-template <typename T>
+template <typename T1, typename T2>
 class Signal_form_window: public Window {
 protected:
 	string sample_str;
 	string time_str;
+	string sample_word;
+	string time_word;
 	int samples_number = 1;
 	Signal_form_window(const  Signal_form_window& win) { }
 	Signal_form_window & operator=( const  Signal_form_window& win){ }
 public:
-	vector<T> sample_;
-	vector<TIME_TYPE> time_;
+	vector<T1> sample_;
+	vector<T2> time_;
 
 	Signal_form_window() {
 		start_point_ = Point (20,0, ' ');
@@ -386,23 +390,17 @@ public:
 			cin>>time_str;
 			time_str.push_back(',');
 
-			string sample_word;
-			string time_word;
 			for(unsigned i = 0; i<samples_number; ++i){
-				sample_word = find_word(sample_str, i+1);
-				time_word = find_word(time_str, i+1);
+				sample_word = find_word(this->sample_str, i+1);
+				time_word = find_word(this->time_str, i+1);
 				if((sample_word != "NOT WORD") | (time_word != "NOT WORD")){
-					if(IsDouble(sample_word)){
-						//sample_.push_back(stod(sample_word));
-						//time_.push_back(stod(time_word));
-						sample_.push_back(ConvertToDouble(sample_word));
-						time_.push_back(ConvertToDouble(time_word));
+					if(IsDouble(this->sample_word)){
+						sample_.push_back(stod(sample_word));
+						time_.push_back(stod(time_word));
 					}
 					else {
-						//sample_.push_back(stoi(sample_word));
-						//time_.push_back(stoi(time_word));
-						sample_.push_back(atoi(sample_word.c_str()));
-						time_.push_back(atoi(time_word.c_str()));
+						sample_.push_back(stoi(sample_word));
+						time_.push_back(stoi(time_word));
 					}
 				}
 				else {

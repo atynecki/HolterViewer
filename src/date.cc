@@ -69,5 +69,5 @@ void Date::read_date(ifstream& file) {
 	if(!file)
 		throw ReadFileError ("READ ERROR");
 	for(size_t i =0; i < array_size; ++i)
-		date_[i] = atoi(find_word(read_temp, i+1).c_str());
+		date_[i] = stoi(find_word(read_temp, i+1));
 }

@@ -21,4 +21,6 @@
 //#include <random>
 //#include <stdexcept>
 
+#include "error.h"
+
 #endif

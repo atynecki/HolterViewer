@@ -37,7 +37,7 @@ void PressCToContinue()
 	}
  }
 
-bool IsDouble (const string &str)
+bool IsDouble (const string str)
 {
 	size_t position;
 	position = str.find(".", 0);
@@ -46,13 +46,4 @@ bool IsDouble (const string &str)
 	else
 		return true;
 
-}
-
-double ConvertToDouble (const string &str)
-{
-	istringstream i(str);
-	double value;
-	i>>value;
-
-	return value;
 }

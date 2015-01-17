@@ -5,8 +5,7 @@
 #define APP_SERVICE_H_
 
 #include "std_lib_facilities.h"
-
-using namespace std;
+#include "graph_lib_file.h"
 
 typedef enum{
 	example =1,
@@ -29,7 +28,6 @@ string find_word(string line, int word_number);
 
 void PressCToContinue();
 
-bool IsDouble (const string &str);
-double ConvertToDouble (const string &str);
+bool IsDouble (const string str);
 
 #endif /* APP_SERVICE_H_ */
